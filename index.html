@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>elixir.land</title>
+  <meta name="description" content="where Elixir meets Brazil">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --elixir: #4b275f;
+      --elixir-light: #7a4a94;
+      --elixir-glow: #b589c4;
+      --elixir-deep: #2e1640;
+      --ocean: #1f4d77;
+      --ocean-light: #3a7aa8;
+      --ocean-deep: #0f2a47;
+      --land: #5ca65c;
+      --land-dark: #2f6e2f;
+      --brazil: #8dd18d;
+      --brazil-dark: #4d8f4d;
+      --star: #ffffff;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      background:
+        radial-gradient(ellipse at 50% 40%, #1b1038 0%, #0a0418 60%, #020108 100%);
+      color: #fff;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+    }
+
+    /* starfield */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 75% 15%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 40% 80%, #fff 50%, transparent 100%),
+        radial-gradient(2px 2px at 85% 70%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 10% 60%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 55% 45%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 90% 40%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 30% 10%, #fff 50%, transparent 100%),
+        radial-gradient(2px 2px at 65% 90%, #fff 50%, transparent 100%),
+        radial-gradient(1px 1px at 5% 90%, #fff 50%, transparent 100%);
+      opacity: 0.6;
+      animation: twinkle 6s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .brand {
+      position: fixed;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      letter-spacing: 0.5em;
+      text-transform: lowercase;
+      opacity: 0;
+      animation: fade-in 1.5s ease-out 0.2s forwards;
+      z-index: 10;
+    }
+
+    .tagline {
+      position: fixed;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-align: center;
+      opacity: 0;
+      animation: fade-in 2s ease-out 10s forwards;
+      color: #d9c9e8;
+      z-index: 10;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .scene {
+      position: relative;
+      width: 520px;
+      height: 520px;
+      animation: scene-zoom 12s cubic-bezier(0.4, 0, 0.3, 1) forwards;
+    }
+
+    @keyframes scene-zoom {
+      0%, 50% { transform: scale(1) translateY(0); }
+      65% { transform: scale(1.4) translateY(40px); }
+      100% { transform: scale(1.4) translateY(40px); }
+    }
+
+    /* globe */
+    .globe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 440px;
+      height: 440px;
+      margin-left: -220px;
+      margin-top: -220px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--ocean);
+      box-shadow:
+        inset -25px -35px 80px rgba(0, 0, 0, 0.55),
+        inset 25px 25px 60px rgba(255, 255, 255, 0.08),
+        0 0 60px rgba(120, 180, 220, 0.25),
+        0 0 140px rgba(75, 39, 95, 0.35);
+    }
+
+    .map-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 2640px;
+      display: flex;
+      animation: spin 6s cubic-bezier(0.18, 0.7, 0.25, 1) forwards;
+    }
+
+    .map {
+      width: 880px;
+      height: 100%;
+      flex: 0 0 auto;
+      display: block;
+    }
+
+    /* 2 full rotations (1760) then land so Brazil is centered.
+       Brazil center in one copy ≈ x 275. Globe internal center ≈ 220.
+       Final offset per copy = 220 - 275 = -55. So -(1760 + 55) = -1815. */
+    @keyframes spin {
+      0%   { transform: translateX(0); }
+      60%  { transform: translateX(-1500px); }
+      100% { transform: translateX(-1815px); }
+    }
+
+    /* spherical shading on top of map */
+    .shade {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 38%),
+        radial-gradient(circle at 70% 72%, rgba(0, 0, 0, 0.55) 15%, rgba(0, 0, 0, 0) 65%);
+      mix-blend-mode: normal;
+    }
+
+    /* soft atmosphere halo */
+    .atmosphere {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 500px;
+      height: 500px;
+      margin-left: -250px;
+      margin-top: -250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(122, 74, 148, 0) 60%, rgba(122, 74, 148, 0.35) 72%, rgba(122, 74, 148, 0) 82%);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; transform: translate(0, 0) scale(1); }
+      50% { opacity: 1; transform: translate(0, 0) scale(1.03); }
+    }
+
+    /* pulse under brazil when it lands */
+    .brazil-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70px;
+      height: 70px;
+      margin-left: -35px;
+      margin-top: -10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(181, 137, 196, 0.9) 0%, rgba(181, 137, 196, 0) 70%);
+      opacity: 0;
+      animation: brazil-pulse 2s ease-out 5s forwards, brazil-pulse-loop 2.5s ease-in-out 7s infinite;
+      pointer-events: none;
+    }
+    @keyframes brazil-pulse {
+      0%   { opacity: 0; transform: scale(0.3); }
+      60%  { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.85; transform: scale(1); }
+    }
+    @keyframes brazil-pulse-loop {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%      { opacity: 1;   transform: scale(1.25); }
+    }
+
+    /* flag: pole + logo */
+    .flag-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -140px;
+      margin-top: -20px;
+      width: 280px;
+      height: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .pole {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 3px;
+      height: 0;
+      margin-left: -1.5px;
+      background: linear-gradient(to top, rgba(181, 137, 196, 1), rgba(255, 255, 255, 0.9));
+      border-radius: 3px;
+      box-shadow: 0 0 12px rgba(181, 137, 196, 0.9);
+      transform-origin: bottom center;
+      animation: pole-rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 7.8s forwards;
+    }
+    @keyframes pole-rise {
+      0%   { height: 0; top: 0; }
+      100% { height: 260px; top: -260px; }
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 240px;
+      height: 320px;
+      margin-left: -120px;
+      margin-top: -320px;
+      transform: translateY(40px) scale(0.1) rotate(-6deg);
+      opacity: 0;
+      transform-origin: center bottom;
+      filter: drop-shadow(0 10px 30px rgba(75, 39, 95, 0.9));
+      animation:
+        logo-unfurl 1.6s cubic-bezier(0.25, 1.4, 0.4, 1) 8.6s forwards,
+        logo-float 4s ease-in-out 10.5s infinite;
+    }
+    @keyframes logo-unfurl {
+      0%   { opacity: 0; transform: translateY(40px) scale(0.1) rotate(-6deg); }
+      60%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(3deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+    }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+      50%      { transform: translateY(-8px) rotate(1.5deg); }
+    }
+
+    /* sparkle dots at flag */
+    .sparkle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      margin-left: -3px;
+      margin-top: -3px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 8px #fff, 0 0 18px var(--elixir-glow);
+      opacity: 0;
+      animation: sparkle 3s ease-out 9s infinite;
+    }
+    .sparkle.s2 { animation-delay: 9.4s; margin-top: -80px; margin-left: 40px; }
+    .sparkle.s3 { animation-delay: 9.8s; margin-top: -140px; margin-left: -60px; }
+    .sparkle.s4 { animation-delay: 10.2s; margin-top: -100px; margin-left: 80px; }
+    .sparkle.s5 { animation-delay: 10.6s; margin-top: -180px; margin-left: -30px; }
+
+    @keyframes sparkle {
+      0%   { opacity: 0; transform: scale(0.2) translateY(0); }
+      30%  { opacity: 1; transform: scale(1) translateY(-20px); }
+      100% { opacity: 0; transform: scale(0.3) translateY(-80px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01s !important; animation-iteration-count: 1 !important; }
+    }
+
+    @media (max-width: 600px) {
+      .scene { transform: scale(0.75); }
+      .tagline { font-size: 0.85rem; padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="brand">elixir.land</div>
+
+  <div class="scene">
+    <div class="atmosphere"></div>
+
+    <div class="globe">
+      <div class="map-track">
+        <!-- three identical copies of the world map for seamless scrolling -->
+        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a7aa8"/>
+              <stop offset="100%" stop-color="#1f4d77"/>
+            </linearGradient>
+          </defs>
+          <rect width="880" height="440" fill="url(#oceanGrad)"/>
+          <!-- north america -->
+          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- greenland blob -->
+          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
+                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
+          <!-- south america: everything except brazil -->
+          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- brazil (highlighted) -->
+          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
+                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
+          <!-- europe -->
+          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- africa -->
+          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- asia -->
+          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- india -->
+          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- southeast asia / indonesia -->
+          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- australia -->
+          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <!-- antarctica strip -->
+          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
+                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
+        </svg>
+
+        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <use href="#dup"/>
+          <rect width="880" height="440" fill="url(#oceanGrad)"/>
+          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
+                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
+          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
+                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
+                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
+        </svg>
+
+        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="880" height="440" fill="url(#oceanGrad)"/>
+          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
+                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
+          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
+                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
+                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
+                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="shade"></div>
+      <div class="brazil-pulse"></div>
+    </div>
+
+    <div class="flag-wrap">
+      <div class="pole"></div>
+
+      <svg class="logo" viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg" aria-label="Elixir logo">
+        <defs>
+          <linearGradient id="dropGrad" x1="0.2" y1="0" x2="0.9" y2="1">
+            <stop offset="0%" stop-color="#9966b5"/>
+            <stop offset="55%" stop-color="#6e4a7e"/>
+            <stop offset="100%" stop-color="#3d1f52"/>
+          </linearGradient>
+          <linearGradient id="shineGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8d6f0" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#e8d6f0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- elixir drop: pointed top, rounded bottom -->
+        <path d="
+          M 120 10
+          C 120 10, 60 110, 50 180
+          C 40 260, 90 310, 120 310
+          C 150 310, 200 260, 190 180
+          C 180 110, 120 10, 120 10
+          Z"
+          fill="url(#dropGrad)"
+          stroke="#2a0f3d"
+          stroke-width="4"
+          stroke-linejoin="round"/>
+
+        <!-- inner shine highlight -->
+        <path d="
+          M 110 50
+          C 90 100, 75 150, 78 200
+          C 80 230, 95 255, 110 260"
+          fill="none"
+          stroke="url(#shineGrad)"
+          stroke-width="10"
+          stroke-linecap="round"/>
+
+        <!-- small shimmer dot -->
+        <circle cx="145" cy="105" r="5" fill="#f0e0f8" opacity="0.6"/>
+      </svg>
+
+      <div class="sparkle s1"></div>
+      <div class="sparkle s2"></div>
+      <div class="sparkle s3"></div>
+      <div class="sparkle s4"></div>
+      <div class="sparkle s5"></div>
+    </div>
+  </div>
+
+  <div class="tagline">where Elixir meets Brazil</div>
+</body>
+</html>
