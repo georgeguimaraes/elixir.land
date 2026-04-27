@@ -10,37 +10,21 @@
 
     :root {
       --elixir: #4b275f;
-      --elixir-light: #7a4a94;
       --elixir-glow: #b589c4;
-      --elixir-deep: #2e1640;
-      --ocean: #1f4d77;
-      --ocean-light: #3a7aa8;
-      --ocean-deep: #0f2a47;
-      --land: #5ca65c;
-      --land-dark: #2f6e2f;
-      --brazil: #8dd18d;
-      --brazil-dark: #4d8f4d;
-      --star: #ffffff;
+      --ocean-deep: #0c2d4e;
     }
 
     html, body { height: 100%; overflow: hidden; }
 
     body {
-      background:
-        radial-gradient(ellipse at 50% 40%, #1b1038 0%, #0a0418 60%, #020108 100%);
+      background: radial-gradient(ellipse at 50% 40%, #1b1038 0%, #0a0418 60%, #020108 100%);
       color: #fff;
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1200px;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* starfield */
     .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; pointer-events: none;
       background-image:
         radial-gradient(1px 1px at 20% 30%, #fff 50%, transparent 100%),
         radial-gradient(1px 1px at 75% 15%, #fff 50%, transparent 100%),
@@ -55,238 +39,226 @@
       opacity: 0.6;
       animation: twinkle 6s ease-in-out infinite;
     }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.8; }
-    }
-
-    .brand {
-      position: fixed;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem;
-      letter-spacing: 0.5em;
-      text-transform: lowercase;
-      opacity: 0;
-      animation: fade-in 1.5s ease-out 0.2s forwards;
-      z-index: 10;
-    }
-
-    .tagline {
-      position: fixed;
-      bottom: 3rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-      text-align: center;
-      opacity: 0;
-      animation: fade-in 2s ease-out 10s forwards;
-      color: #d9c9e8;
-      z-index: 10;
-    }
-
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.85; } }
 
     .scene {
       position: relative;
-      width: 520px;
-      height: 520px;
-      animation: scene-zoom 12s cubic-bezier(0.4, 0, 0.3, 1) forwards;
+      width: 520px; height: 520px;
+      animation: scene-zoom 10s cubic-bezier(0.4, 0, 0.3, 1) forwards;
     }
 
     @keyframes scene-zoom {
-      0%, 50% { transform: scale(1) translateY(0); }
-      65% { transform: scale(1.4) translateY(40px); }
-      100% { transform: scale(1.4) translateY(40px); }
+      0%, 40% { transform: scale(1) translateY(0); }
+      58%     { transform: scale(1.4) translateY(20px); }
+      100%    { transform: scale(1.4) translateY(20px); }
     }
 
-    /* globe */
+    .atmosphere {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 520px; height: 520px;
+      margin-left: -260px; margin-top: -260px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(120, 180, 240, 0) 58%,
+        rgba(120, 180, 240, 0.18) 68%,
+        rgba(160, 130, 220, 0.30) 76%,
+        rgba(160, 130, 220, 0) 86%);
+      pointer-events: none;
+      filter: blur(1px);
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.75; transform: scale(1); }
+      50%      { opacity: 1;    transform: scale(1.025); }
+    }
+
     .globe {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 440px;
-      height: 440px;
-      margin-left: -220px;
-      margin-top: -220px;
+      top: 50%; left: 50%;
+      width: 440px; height: 440px;
+      margin-left: -220px; margin-top: -220px;
       border-radius: 50%;
       overflow: hidden;
-      background: var(--ocean);
+      background: var(--ocean-deep);
       box-shadow:
-        inset -25px -35px 80px rgba(0, 0, 0, 0.55),
-        inset 25px 25px 60px rgba(255, 255, 255, 0.08),
-        0 0 60px rgba(120, 180, 220, 0.25),
-        0 0 140px rgba(75, 39, 95, 0.35);
+        inset -18px -30px 70px 5px rgba(0, 0, 0, 0.60),
+        inset 22px 20px 50px rgba(180, 220, 255, 0.12),
+        0 0 50px rgba(100, 160, 220, 0.25),
+        0 0 140px rgba(75, 39, 95, 0.4);
     }
 
     .map-track {
       position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
+      top: 0; left: 0; height: 100%;
       width: 2640px;
       display: flex;
-      animation: spin 6s cubic-bezier(0.18, 0.7, 0.25, 1) forwards;
+      transform: translateX(-421px);
+      animation: spin 4.4s cubic-bezier(0.15, 0.65, 0.25, 1) forwards;
     }
 
-    .map {
-      width: 880px;
-      height: 100%;
-      flex: 0 0 auto;
-      display: block;
-    }
+    .map { width: 880px; height: 100%; flex: 0 0 auto; display: block; }
 
-    /* 2 full rotations (1760) then land so Brazil is centered.
-       Brazil center in one copy ≈ x 275. Globe internal center ≈ 220.
-       Final offset per copy = 220 - 275 = -55. So -(1760 + 55) = -1815. */
     @keyframes spin {
-      0%   { transform: translateX(0); }
-      60%  { transform: translateX(-1500px); }
-      100% { transform: translateX(-1815px); }
+      0%   { transform: translateX(-421px); }
+      100% { transform: translateX(-986px); }
     }
 
-    /* spherical shading on top of map */
-    .shade {
-      position: absolute;
-      inset: 0;
+    .lighting {
+      position: absolute; inset: 0;
       border-radius: 50%;
       pointer-events: none;
       background:
-        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 38%),
-        radial-gradient(circle at 70% 72%, rgba(0, 0, 0, 0.55) 15%, rgba(0, 0, 0, 0) 65%);
-      mix-blend-mode: normal;
+        radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 38%),
+        radial-gradient(circle at 76% 82%, rgba(0, 0, 0, 0.68) 10%, rgba(0, 0, 0, 0) 65%),
+        radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.35) 100%);
     }
 
-    /* soft atmosphere halo */
-    .atmosphere {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 500px;
-      height: 500px;
-      margin-left: -250px;
-      margin-top: -250px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(122, 74, 148, 0) 60%, rgba(122, 74, 148, 0.35) 72%, rgba(122, 74, 148, 0) 82%);
+    .wire {
+      position: absolute; inset: 0;
       pointer-events: none;
-      animation: pulse 4s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; transform: translate(0, 0) scale(1); }
-      50% { opacity: 1; transform: translate(0, 0) scale(1.03); }
+      opacity: 0.16;
+      mix-blend-mode: screen;
     }
 
-    /* pulse under brazil when it lands */
     .brazil-pulse {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 70px;
-      height: 70px;
-      margin-left: -35px;
-      margin-top: -10px;
+      top: 50%; left: 50%;
+      width: 90px; height: 90px;
+      margin-left: -45px;
+      margin-top: 13px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(181, 137, 196, 0.9) 0%, rgba(181, 137, 196, 0) 70%);
+      background: radial-gradient(circle, rgba(181, 137, 196, 0.95) 0%, rgba(181, 137, 196, 0) 70%);
       opacity: 0;
-      animation: brazil-pulse 2s ease-out 5s forwards, brazil-pulse-loop 2.5s ease-in-out 7s infinite;
+      animation:
+        brazil-pulse 1.4s ease-out 3.8s forwards,
+        brazil-pulse-loop 2.5s ease-in-out 5.2s infinite;
       pointer-events: none;
+      mix-blend-mode: screen;
     }
     @keyframes brazil-pulse {
       0%   { opacity: 0; transform: scale(0.3); }
       60%  { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.85; transform: scale(1); }
+      100% { opacity: 0.9; transform: scale(1); }
     }
     @keyframes brazil-pulse-loop {
       0%, 100% { opacity: 0.6; transform: scale(1); }
       50%      { opacity: 1;   transform: scale(1.25); }
     }
 
-    /* flag: pole + logo */
     .flag-wrap {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-left: -140px;
-      margin-top: -20px;
-      width: 280px;
-      height: 0;
-      pointer-events: none;
-      z-index: 5;
+      top: 50%; left: 50%;
+      margin-left: -2px;
+      margin-top: 58px;
+      width: 4px; height: 0;
+      pointer-events: none; z-index: 5;
+    }
+
+    .bobblehead {
+      position: absolute;
+      left: 50%; top: 0;
+      width: 90px; height: 90px;
+      margin-left: -84px;
+      margin-top: -50px;
+      z-index: 6;
+      opacity: 0;
+      transform-origin: center bottom;
+      animation: bobble-in 0.8s cubic-bezier(0.25, 1.4, 0.4, 1) 4.6s forwards;
+      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.55));
+    }
+    @keyframes bobble-in {
+      0%   { opacity: 0; transform: translateY(50px) scale(0.4) rotate(-8deg); }
+      60%  { opacity: 1; transform: translateY(-4px) scale(1.05) rotate(2deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    .bobble-head {
+      transform-origin: 35px 56px;
+      animation: head-bobble 1.8s ease-in-out 5.5s infinite;
+    }
+    @keyframes head-bobble {
+      0%, 100% { transform: rotate(-6deg); }
+      50%      { transform: rotate(6deg); }
     }
 
     .pole {
       position: absolute;
-      left: 50%;
-      top: 0;
-      width: 3px;
-      height: 0;
+      left: 50%; top: 0;
+      width: 3px; height: 0;
       margin-left: -1.5px;
-      background: linear-gradient(to top, rgba(181, 137, 196, 1), rgba(255, 255, 255, 0.9));
+      background: linear-gradient(to top, #9a7faf 0%, #d9c2e4 100%);
       border-radius: 3px;
-      box-shadow: 0 0 12px rgba(181, 137, 196, 0.9);
-      transform-origin: bottom center;
-      animation: pole-rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 7.8s forwards;
+      box-shadow: 0 0 8px rgba(181, 137, 196, 0.7);
+      animation: pole-rise 1.0s cubic-bezier(0.2, 0.7, 0.2, 1) 5.6s forwards;
     }
     @keyframes pole-rise {
       0%   { height: 0; top: 0; }
-      100% { height: 260px; top: -260px; }
+      100% { height: 220px; top: -220px; }
     }
 
-    .logo {
+    /* gold finial at top of pole */
+    .finial {
       position: absolute;
-      left: 50%;
-      top: 0;
-      width: 240px;
-      height: 320px;
-      margin-left: -120px;
-      margin-top: -320px;
-      transform: translateY(40px) scale(0.1) rotate(-6deg);
+      left: 50%; top: 0;
+      width: 8px; height: 8px;
+      margin-left: -4px;
+      margin-top: -224px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe082, #c69612);
+      box-shadow: 0 0 6px rgba(255, 200, 80, 0.9);
       opacity: 0;
-      transform-origin: center bottom;
-      filter: drop-shadow(0 10px 30px rgba(75, 39, 95, 0.9));
-      animation:
-        logo-unfurl 1.6s cubic-bezier(0.25, 1.4, 0.4, 1) 8.6s forwards,
-        logo-float 4s ease-in-out 10.5s infinite;
+      animation: finial-in 0.4s ease-out 6.4s forwards;
     }
-    @keyframes logo-unfurl {
-      0%   { opacity: 0; transform: translateY(40px) scale(0.1) rotate(-6deg); }
-      60%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(3deg); }
-      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-    }
-    @keyframes logo-float {
-      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-      50%      { transform: translateY(-8px) rotate(1.5deg); }
+    @keyframes finial-in {
+      0% { opacity: 0; transform: scale(0.2); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    /* sparkle dots at flag */
+    .flag-banner {
+      position: absolute;
+      left: 50%; top: 0;
+      width: 150px; height: 90px;
+      margin-left: 0;
+      margin-top: -216px;
+      transform-origin: left center;
+      transform: scaleX(0);
+      opacity: 0;
+      animation:
+        flag-unfurl 1.2s cubic-bezier(0.25, 0.85, 0.4, 1) 6.6s forwards,
+        flag-wave 4.5s ease-in-out 8.0s infinite;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45));
+    }
+    @keyframes flag-unfurl {
+      0%   { transform: scaleX(0) skewY(0deg); opacity: 0; }
+      25%  { opacity: 1; }
+      100% { transform: scaleX(1) skewY(0deg); opacity: 1; }
+    }
+    @keyframes flag-wave {
+      0%, 100% { transform: scaleX(1) skewY(-0.6deg) translateY(0); }
+      50%      { transform: scaleX(1) skewY(0.6deg)  translateY(-2px); }
+    }
+
     .sparkle {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 6px;
-      height: 6px;
-      margin-left: -3px;
-      margin-top: -3px;
+      top: 50%; left: 50%;
+      width: 5px; height: 5px;
+      margin-left: -2.5px; margin-top: -2.5px;
       border-radius: 50%;
       background: #fff;
       box-shadow: 0 0 8px #fff, 0 0 18px var(--elixir-glow);
       opacity: 0;
-      animation: sparkle 3s ease-out 9s infinite;
+      animation: sparkle 3s ease-out 7.4s infinite;
     }
-    .sparkle.s2 { animation-delay: 9.4s; margin-top: -80px; margin-left: 40px; }
-    .sparkle.s3 { animation-delay: 9.8s; margin-top: -140px; margin-left: -60px; }
-    .sparkle.s4 { animation-delay: 10.2s; margin-top: -100px; margin-left: 80px; }
-    .sparkle.s5 { animation-delay: 10.6s; margin-top: -180px; margin-left: -30px; }
+    .sparkle.s2 { animation-delay: 7.8s;  margin-top: -200px; margin-left: 80px; }
+    .sparkle.s3 { animation-delay: 8.2s;  margin-top: -160px; margin-left: 30px; }
+    .sparkle.s4 { animation-delay: 8.6s;  margin-top: -190px; margin-left: 130px; }
+    .sparkle.s5 { animation-delay: 9.0s;  margin-top: -140px; margin-left: 60px; }
+    .sparkle.s1 {                          margin-top: -170px; margin-left: 100px; }
 
     @keyframes sparkle {
       0%   { opacity: 0; transform: scale(0.2) translateY(0); }
-      30%  { opacity: 1; transform: scale(1) translateY(-20px); }
-      100% { opacity: 0; transform: scale(0.3) translateY(-80px); }
+      30%  { opacity: 1; transform: scale(1) translateY(-12px); }
+      100% { opacity: 0; transform: scale(0.3) translateY(-40px); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -295,162 +267,275 @@
 
     @media (max-width: 600px) {
       .scene { transform: scale(0.75); }
-      .tagline { font-size: 0.85rem; padding: 0 1rem; }
     }
   </style>
 </head>
 <body>
   <div class="stars"></div>
-  <div class="brand">elixir.land</div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#3682b4"/>
+        <stop offset="50%" stop-color="#1d5584"/>
+        <stop offset="100%" stop-color="#0c2d4e"/>
+      </linearGradient>
+      <linearGradient id="landGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#83c470"/>
+        <stop offset="55%" stop-color="#4f9a4d"/>
+        <stop offset="100%" stop-color="#2c6932"/>
+      </linearGradient>
+      <linearGradient id="brazilGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#d4f288"/>
+        <stop offset="100%" stop-color="#6ab441"/>
+      </linearGradient>
+      <radialGradient id="iceGrad" cx="0.5" cy="0.5" r="0.6">
+        <stop offset="0%"  stop-color="#fafdff"/>
+        <stop offset="100%" stop-color="#c3d1dc"/>
+      </radialGradient>
+
+      <linearGradient id="polarTop" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#fafdff" stop-opacity="0.98"/>
+        <stop offset="55%"  stop-color="#e3ecf3" stop-opacity="0.92"/>
+        <stop offset="100%" stop-color="#dde6ed" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="polarBottom" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#dde6ed" stop-opacity="0"/>
+        <stop offset="45%"  stop-color="#e3ecf3" stop-opacity="0.92"/>
+        <stop offset="100%" stop-color="#fafdff" stop-opacity="0.98"/>
+      </linearGradient>
+
+      <symbol id="world-map" viewBox="0 0 880 440">
+        <rect width="880" height="440" fill="url(#oceanGrad)"/>
+
+        <!-- graticule -->
+        <g stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none">
+          <line x1="0" y1="88"  x2="880" y2="88"/>
+          <line x1="0" y1="132" x2="880" y2="132"/>
+          <line x1="0" y1="176" x2="880" y2="176"/>
+          <line x1="0" y1="220" x2="880" y2="220"/>
+          <line x1="0" y1="264" x2="880" y2="264"/>
+          <line x1="0" y1="308" x2="880" y2="308"/>
+          <line x1="0" y1="352" x2="880" y2="352"/>
+          <line x1="73"  y1="0" x2="73"  y2="440"/>
+          <line x1="147" y1="0" x2="147" y2="440"/>
+          <line x1="220" y1="0" x2="220" y2="440"/>
+          <line x1="293" y1="0" x2="293" y2="440"/>
+          <line x1="367" y1="0" x2="367" y2="440"/>
+          <line x1="440" y1="0" x2="440" y2="440"/>
+          <line x1="513" y1="0" x2="513" y2="440"/>
+          <line x1="587" y1="0" x2="587" y2="440"/>
+          <line x1="660" y1="0" x2="660" y2="440"/>
+          <line x1="733" y1="0" x2="733" y2="440"/>
+          <line x1="807" y1="0" x2="807" y2="440"/>
+        </g>
+
+        <!-- Antarctica + Greenland (ice), sketchy paths -->
+        <path fill="url(#iceGrad)" stroke="#3a4a5e" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" d="M321.8 411.6l11.6 4.5l-25.3 0.6l13.9 -6.6ZM277.9 415.7l16.3 0.7l-16.1 0ZM260.5 393.6l7.1 -4.9l4.5 7l-13.2 -1.6ZM189.7 396.5l16.1 1.2l-16.8 -2.3ZM140.8 399.4l10 1.1l-11.1 -0.8ZM128.2 400.1l7.5 1l-7.9 -0.7ZM39.9 412.3l9.9 0.9l-10.4 0.1ZM0.2 427.9l88.9 -1l-25.7 -1.9l2.1 -5l-8.5 -1.3l24.6 -2.4l-29.3 -8.2l33 -4.6l185.5 -5.5l4.1 -15.7l23.2 -7.4l-19.3 10.3l13.2 14.9l-40.9 7l9.7 4l-11.3 2.9l48.6 9.5l71.9 -7.3l-17.4 -4.7l70.7 -18l111.9 -2l37.5 -11.8l35.3 5.2l-1.1 11l3.5 -0l45.7 -13.3l77.4 2.2l37.4 -5.4l87.5 15.9l-17.5 12.2l8.5 5.8l-19.6 4l51.6 9.9ZM326.5 18.3l46.4 -1.6l15.7 2.1l-27.1 0.5l49.6 1.3l-19.8 2.5l4.4 0.4l0.5 9.5l-8.6 -0.6l5.7 6.7l-13.9 4.5l8.4 2.7l-12.7 2.2l9.7 0l-41.7 10.9l-8.8 13.3l-20.1 -8.5l-5.5 -9.4l7.6 -6.4l-8.6 1.9l6.9 -2.8l-17.2 -11.4l-35.6 -6l25.4 -8.5l45.2 -0.1l-6.5 -3.4Z"/>
+
+        <!-- continents: paths are pre-jittered for hand-drawn feel -->
+        <path fill="url(#landGrad)" stroke="#0a0e0c" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" d="M522.7 222.5l14.5 8.8l-0.6 15.6l-13.2 1.3l-10.6 -11.3l0.2 -14.7l8.5 1.2ZM419.4 150.9l-7.1 7.2l-3.4 10.1l-11.7 -1.1l21.7 -16.1ZM138.7 99.4l-31.4 -25.7l-12.2 -0.1l0.3 -23.6l109.6 6l2.1 -12.5l20.9 13.8l11.1 -6.9l1.3 4.7l-22.9 8l-8.2 12.5l30.6 9.2l6.1 11.1l-2.9 -10.5l10.9 -3.7l-3.6 -14.4l7.5 0.4l17.4 9.2l5.3 -5l24.6 21.4l-28.9 3.1l-11.6 7.7l17 -5.5l0.7 8.2l10.2 1.7l-13.8 5.5l2.3 -5l-11.5 -5.8l-29.8 15.8l-2.4 -8.7l-14.5 -8.8l-82.2 -0.9ZM233.4 68.9l5.5 -3.4l-3.4 1.3ZM244.3 40.7l8 1.6l-8.1 0.1ZM210.8 36.6l-6 0.2l6.6 1.1ZM209.6 29.4l-4 1.4l4.2 -1.2ZM204.3 28.9l-6.3 -0.2l6.8 -0.8ZM224.3 36.9l-23.2 -3l42.9 3.6l-20.3 1.7ZM168.3 28.3l-6.9 2.4l5.2 -2.6ZM304.3 95.7l-2.7 1.8l9.1 1.1l-1.9 6.5l-13.8 -3l8.1 -8.1ZM235.2 59.7l8.6 5.8l-15.4 -0.3l7.2 -4.1ZM246.3 41.7l41 16.2l-2.9 4.7l-12.2 -4.1l9.7 7.3l-10.8 3.5l-24.4 -6.9l13.3 -1l1.6 -7l-41.1 -9.5l26.5 -1ZM210.3 40l8.2 0.4l-10.5 3.7l1.5 -5.7ZM139.9 34.3l14.7 -3.6l-13.3 4.5ZM116.3 87.5l3.8 5.2l-4.7 -3.7ZM180.8 27l14.1 2.9l-12.8 -4.6ZM138.7 101.4l-12.1 -4.2l10.7 2.6ZM142.3 38.6l14.4 0.8l-23.2 5.5l9.2 -5.6ZM175.9 35.1l4.8 0.1l-27.4 2.2l24.4 -3.2ZM179.9 40.8l11.8 9.1l-27.6 3.7l-10.3 -3.2l10.6 -3.5l-16.5 -2.6l30.7 -3.3ZM194.9 42.3l8.5 1.5l-12.4 -1.1l2.1 -1.8ZM180.6 38.6l4.6 2.1l-6.4 0.3ZM197.7 31.3l2.2 3.8l-9.4 -0.7l7.6 -3.4ZM205.7 22.8l24.9 3.8l-16.7 3.4l-8.1 -7.9ZM216 18.8l71.2 -0.9l-34.6 7.1l2.3 2.5l-11.3 6.3l-22.1 0l10.3 -2.5l-5.7 -4.3l7.1 -0.4l-7.1 -3.1l14 0.9l-24.6 -4.6ZM257.3 56.1l-4.7 -1.4l4 -0.5ZM205.4 51.2l-8.9 -0.1l7.3 0.4ZM283.8 99.6l5.2 1.3l-7.3 -1.5ZM284.7 104.5l2.4 1.7l-3.4 -0.4ZM139.7 98.7l85.3 1.8l14.2 7.6l-1.8 10.9l32.3 -16.2l6.8 8.3l-23.5 15.9l3.4 5.9l-13.7 8.7l0 16.6l-14.5 -12.1l-19.2 1.6l-6.3 9l-23.6 -15l-32.8 -5.3l-11.3 -14.1l1.7 -20.3l3.9 1.6l-0.7 -3.7ZM95.7 48.1l1.1 24.6l11.7 2.2l12.6 11.2l-22.4 -12.9l-29.5 2l4 -3.6l-37.2 15l18.9 -10.8l-18.1 -2.4l10.1 -12.3l-18.8 -1.2l18.1 -2.7l-11.5 -7.1l21.7 -5.4l39.7 4.3ZM19.8 64.5l6.6 1.5l-7.4 -1.9ZM652.7 98.7l-17.2 11.3l0.2 6.2l-14.3 -3.1l-14.7 7.9l-23.4 -12.3l-5.6 1.7l0.1 7.8l-8.8 0.7l-4.8 -8.5l4.8 -3.5l-16.4 -3.5l12.6 -10.8l23.8 4.1l0.3 -9.9l20.5 -2.3l19 1.2l6.4 10.7l16.7 2.5ZM577.4 120.3l0.8 -11.6l4.8 0.6l23.8 11.8l10.7 -2.5l-13.4 3l1.7 7.5l-22.4 -14.9l-7.7 3.7ZM785.8 227.9l24 16.6l-17.3 -4.5l-7.8 3l-0.5 -16.9ZM813.2 228.7l-4.6 -3.6l5.2 4.9ZM808.8 234.1l-5.5 -0.4l7.6 -4.7l-1 3.7ZM819.6 234l2.1 3.8l-3 -5.1ZM785 226.4l1.3 16.9l-28 -19.7l27.2 3.6ZM746.5 241.4l-3.4 4.8l3 -3.7ZM729 209.6l2.6 6.8l-8.2 13.3l-15.5 -3l0.6 -11.2l8.8 3l11.4 -9.1ZM756.8 227.1l3.2 2l-2.1 -1.8ZM753.4 215.5l1.3 5.1l-1.6 -5.2ZM739.7 217.5l5 -2l-11.7 4.4l7.7 2.8l-3.5 1.9l5.4 8.6l-5.3 -6.4l-3.5 5.6l-0.6 -12.1l5.8 -1.2ZM728 240.4l-3.7 1.7l5.1 -3ZM706.6 235.4l16.3 5.3l-25.8 -4.7l8.6 -0.2ZM694.4 223.3l3.6 9.4l-25.9 -27.6l21.9 18.3ZM271.9 349.9l9.9 2.3l-8 3.3l-2.9 -5.6ZM298.9 293.8l3.8 15.6l-21.8 12.4l4.7 2.2l-8.6 8.4l2.8 1.9l-6.1 13.6l-10.6 -2.1l-2.6 -6.3l11.9 -58.9l13.7 -7.4l12.8 8.1l-1.4 5.2l11.7 -2.5l-9.4 9.1ZM271 349.9l3.3 6.4l-17.3 -7.9l15.8 0.4ZM270.2 263.4l6.9 11.8l-17.3 66.9l14 7l-9.8 1.2l-7.9 -2.7l-0.6 -14.8l6.9 -10.5l-5.4 4l13.1 -62.8ZM511.3 230.9l0.4 21l-16.7 -3.7l-3.2 -11.6l-21 -2.1l9.2 -6.8l7.4 -20.8l26.3 1.4l-1.4 24.2ZM541.1 224.3l-0.1 -9.7l23.7 -24.4l-7.2 18l-17.2 14.6ZM536 231.4l-12.6 -9.7l3.7 -16.5l14.2 5.8l-6.9 19.9ZM500.8 200.5l-7.8 -12.4l7.7 -21.1l29 -1.9l4.9 11.2l-10.2 23.9l-3 -10.3l-20.3 9.4ZM497.7 171.8l-0.4 22.2l-20.7 7.4l-0.7 -37.7l22.1 8.1ZM263.7 172l-4.8 3.3l6.8 -3.3ZM263.7 176.7l2.5 -6l5.2 3.9l-6.6 1.6ZM670.7 22.4l15.1 1.2l-22.8 0.9l4.9 -3.9ZM692.1 27.5l4.1 0.5l-14.3 2.3l9.9 -4.9ZM778.5 34.7l16.3 1.4l-20.2 -0.6l6.4 -1.1ZM802.3 35.9l6.9 1.2l-10.7 -1.2l4.9 0.4ZM783 41.6l9.1 0.6l-8.7 -1.2ZM549.7 23.7l17.2 -1.2l-17.5 -0.6ZM496.3 88.8l-8.7 -2.9l7 1.1ZM570.1 41.2l36.8 -8.9l-25.2 6.6l-5.4 3.2l2.9 4.9l-12.8 -0.4l2.9 -8.1ZM788.3 87.8l4.4 13.2l-5.1 5.8l0.7 -18.7ZM758.6 117.6l10.8 -16l-8.3 1.5l-16.2 -11.8l-7.8 -2l-8.8 11.1l-46.7 -8.6l-5.3 8l-21.8 -0.6l-18.8 -3.6l-8.5 -7.3l-17.9 -4.6l-20.7 4.1l0.9 8.9l-32.6 0.2l-2.2 21.1l-25.6 -9.5l10.1 -9.8l-21 -4.6l-12.2 -14.6l10 -12.4l-7.6 -15l33.2 3.9l-21.7 0.2l11.4 6.2l16.2 -4.2l0.3 -5.7l6.8 3.7l34.5 -7.4l19.9 3.3l-4.7 -6.8l7 -3.9l5.7 3l-0.4 13.1l5.7 -3.9l-3.5 -7.7l3.5 -3.5l15.9 1.7l-1.3 -2.8l59.5 -10.9l21.3 3.6l-9.3 3.6l42.5 2.2l8.8 8.5l25 -7.6l92.6 8.7ZM-0.4 51.5l24.4 6.7l-24.4 3.5ZM879.2 60.2l-4.8 1.3l5.1 6.4l-39.1 5.2l-3.1 11.5l-15.2 9.4l-0.4 -12.1l19.3 -15.1l-20.9 8.9l-33.8 -0.9l-17.1 10.2l16 3.8l-1.5 12.5l-24 15.9ZM0.9 46.2l4.7 -1l-5.8 0.1ZM521.4 108.3l9.4 1.5l-8.6 -1.8ZM288.9 346.2l9.5 0.3l-9.2 -0.1ZM477 26.2l16.7 1.2l-15.9 5.8l-11 -7.7l9.7 -0.2ZM514.9 50.7l-29.3 1.8l-14.1 12l-5.5 13.1l-11.7 -1.7l-3.4 -8.1l36.3 -17.7l28.3 1.4ZM506.6 24.2l-25.3 1l24.6 0.4ZM500.6 29.9l-9.7 -0.5l10.9 1.9ZM608.7 340.2l3.8 0.3l-4.3 -0.3ZM744.9 240.3l7.1 1.5l-5.8 0.2ZM480.8 289.2l8.2 -1l-1.5 -7.8l5.4 4.6l17.7 -10.4l7.6 4.1l-3.7 6.3l5 -1.1l-9.1 17.6l-20.7 4.6l-9.9 -15.4ZM509.9 291.6l-3.7 2.8l3.3 -2.6ZM509.6 290.9l-2.2 0.5l2.6 -1.3ZM153.1 139.1l39.6 9.1l9.5 8.1l3.6 16.2l19.9 -3.9l-1 6.7l-5.7 2.6l-4.5 5.5l-28.1 -6.9l-21.7 -33.8l-4.6 -0l11.3 20.4l-16.5 -21.1ZM298.2 294.3l9.3 11l-11.7 -3.7l4.1 -8.4ZM270.4 246.9l9.1 -2.7l16.8 16.7l1.2 7.2l-24.4 8.5l-2 -28.8ZM267.7 230.2l-9 7.3l14.9 11.8l-5.7 16.4l-12.2 -11l-14.9 -22.3l14.1 -13.1l15.5 10.1ZM276.2 216.3l-7.1 -1.8l-1.4 17.6l-16.1 -12.3l-1.8 -21.4l15.9 -9.5l-4.9 10.1l14.3 5.6l3.1 12.7ZM249.4 198.5l-6.7 2.4l-6 -3.5l15.3 1.6ZM239.5 196.5l-9.9 -2l8.3 3.1ZM234.6 192.8l-9.9 -4.2l11 -6.2l-1.1 10.8ZM236.1 183.2l-13 2.1l14.8 -2.9ZM221.2 183.4l4.5 4l-4.9 -4.2ZM213.5 183.7l8.2 -5.9l0.5 6.2l-8.2 -0.6ZM223.5 176l-0 5.9l-0.1 -6.9ZM291 206.9l-10.7 4.4l4.3 4.2l-6.6 1.3l-2.9 -12.5l-12.4 -2.5l-0.5 -8.8l2.9 -2l0.9 5.5l3.8 -7l19.8 4.8l0.9 12ZM301.1 216l-7.2 -0.8l-2.8 -10.7l2.2 -5.5l7.6 14.8ZM305.2 214.8l-5.8 -1.9l2.4 -8.1l6.8 2.5l-2.8 7.7ZM314.3 211.3l-6.4 2.2l0.6 -8.9l5 4.9ZM453.7 98.7l5.5 1.5l-5.2 4.5l3.8 8.4l-14.5 3.9l-8.9 -4.5l2.1 -5.3l-8.9 -6l19.1 -6.1l9 2.4ZM255.4 219.9l-13.4 10.6l0.8 -12.4l13.2 2.2ZM238.3 162.5l18.8 7.4l-23.6 -3.2l4.6 -2.8ZM515.2 274.3l-13.1 -9.5l17.7 -3.7l-2.2 14.2ZM512.4 274.4l-19.8 10.7l-4.6 -3.5l4.4 -17.4l10.7 -2.4l7.7 12.1ZM488 280.1l2.1 8.4l-11.2 0.5l-9.7 -27.5l30.4 1.7l-8.9 0.7l-2.2 17.2ZM399.3 187.2l5.3 -6.7l8.8 8.6l-14.7 -1ZM411.3 190.3l0.9 -7.3l15.8 0.2l-4.8 -23.8l27.3 14l-1.9 7.9l-17.5 5.9l-6.6 7.3l-13.1 -6ZM398.3 167.5l8.7 -1l2.5 -9.2l8.1 -4.4l11.3 6l-3.5 24.4l-24.4 -4.2l-3.4 -10.4ZM447.5 204.4l-4.9 -10.7l5.1 -4.1l-1.6 16ZM477.4 165.2l-2.5 24.1l-31.7 -0.3l8.3 -14.8l23.6 -10.4ZM447.1 203.8l2.5 -19l26.2 7l-13.6 15.3l-15.1 -2.7ZM475.9 188.2l4.5 29.1l-18.2 -2.2l-2 -10l14.6 -15.8ZM443.8 191.9l-1.7 12.1l0.3 -10.9ZM439.7 192.5l3.9 14.1l-11.2 0.9l0.9 -13.4l8.4 -1.3ZM421 195.2l13.1 0.1l-2.1 11.2l-9.4 2l-2.2 -14.7ZM405.9 187.7l12 1.1l2.3 11.7l-13.4 -2.3l-0.7 -9.7ZM397.8 188.3l9.9 2.2l-9.8 -1.8ZM419.3 202.8l0.9 7.7l-8.2 -7.4l8.4 -2.3ZM406.2 198.4l9.3 1.4l-4.2 5l-2.5 -5ZM426.6 195.7l11.5 -13.4l5.7 5.7l-18.2 5.2ZM506.5 208l-19.5 -0.3l-9.4 5.8l-0.8 -8.4l19.2 -11.4l11.9 14.2ZM484.8 212.4l-4.6 17.1l-9.5 1.5l-1.2 -4.6l6.4 -4l-2.6 -9.5l12.1 -2.4ZM467.2 214.1l8.6 10.2l-9.1 5.9l-5.6 -8.2l7.8 -8.1ZM462.3 213.9l6.1 2.6l-4 -1.9ZM515.7 239.4l4.3 3.2l0.7 11.4l-16.2 9.9l-8.1 -1.6l-2.7 -9.3l3.8 -5l14.5 5.3l-3.7 -9.3l6.6 -2.1ZM519.2 242.3l7.1 17.8l-6.9 -16.9ZM525.9 247.6l11.6 -2.8l3.7 10l-15.8 13.2l1.7 10.1l-8.4 8.5l2.7 -25.3l-7.6 -4.9l6.2 -1.2l6.3 5.7l-1.2 -13ZM469.7 234l23.7 4l5.3 7.9l-4.7 5.4l3 11.8l-27 -2l3.4 -12l-2.6 -14.9ZM515.2 227.5l-3.8 4.7l1.9 -4.7ZM527.3 139.2l-0.8 9.2l2.3 -7.3ZM562.1 250.5l2.7 6.5l-12.5 26.3l-5.5 -19.7l14.3 -12.9ZM400.3 185.8l5.1 1.7l-7.7 -0.5ZM464.1 145.9l-6.5 -8.3l6.8 -8l3.9 10.7l-4.1 4.5ZM418.3 151.8l17 -11.1l2.9 -6.9l21.1 -5.1l3.1 28.7l7.3 6.6l-23.4 11.1l-28.5 -21.5ZM528.1 141.5l6.7 0.4l-6.9 5.2l-1.6 -6.9ZM566.5 160l11.4 -2.3l-4.4 6.1l-6.7 -3.2ZM556.1 145.5l-0.8 3.7l1.6 -3.5ZM537.4 142l4.3 -11.3l7.1 -1.8l8.8 18.4l-22 -4.9ZM574.7 164.4l3.2 -3.9l7.8 5.6l-16.7 13.4l-2.6 -4.8l7.8 -9.1ZM691.3 190.1l1.8 -5.2l10.7 2.4l-4.3 4.6l-9.1 -2.3ZM697 186.6l-13 1.3l3.8 17.4l-8.2 -6.9l5.1 -8.3l-6.9 -15.7l8 -3.2l11.7 14ZM701.2 186.6l-8.4 -11.6l-6.2 2.9l2.4 -13l14.7 21.8ZM683.2 170.5l-5.3 4l2.9 20.7l-2.7 -16.2l-6.3 3.4l-4.5 -15.2l11.8 -15.8l6.4 20.3ZM693.7 194.2l9 -10.9l-13.8 -16.7l7.7 -4.2l6.4 4.5l-3.9 5.1l6.8 19.9l-8.4 7.8l-3.2 -4.4ZM760.1 117.2l-7.9 8.9l-8.9 1.9l3.9 -5.9l10.6 -6.2ZM748.5 127.8l4 -1.3l2.4 7.7l-6.9 1.9l-0.7 -9.7ZM654.5 98.8l24.1 -1.2l2.8 -6.3l42.9 6.5l-1.2 5.3l10.8 0.5l-36.2 13.5l-20.7 -1.6l-22.8 -15.8ZM679.1 152.4l-12.8 12.2l-1.6 -4.6l-7.5 -3.9l-1 11l-21.3 12.8l-5.9 22.1l-10.9 -33.1l-12.8 -7.1l7.1 -2.1l-3.6 -4.2l14.7 -14.4l-2.6 -3.7l10.9 -3.9l4.1 17.5l7.5 1.6l35.4 -2.3ZM666.1 165.9l-8.6 -0.3l-1.3 -10.4l8.1 4.8l0.8 6.2ZM664.3 151.8l-8 0.7l7.5 -1ZM655.4 151l-18.8 -1.4l1.1 -4.2l19.2 4.9ZM630.6 134.7l-10.7 1.7l3.7 4.1l-13.3 14l2.8 6l-22.7 -0.9l3 -6.2l-5.3 -6.9l15.1 0.4l13.7 -16.3l12.8 3.4ZM601.3 130.2l23.5 -1.5l-11.2 4.2l-10.5 14.6l-15.7 0.5l0.8 -14.7l14.6 -3.2ZM606.3 127.7l7.9 -7l-4.1 1.1l14 6.5l-17.7 2.5ZM614.8 115.3l22.3 1l-26.5 6.7l7.8 -3.1l-6.2 -3.8ZM569.1 116.5l13 0.1l21.1 12.3l-12.3 3.7l-19.7 -2l-2.2 -7l3.9 -3.9l-4.4 -0.7ZM557.5 148l-9.8 -25.9l41.5 8.3l0.2 18.1l5.4 6.7l-14.8 2.8l-22.5 -10.4ZM526.3 140.3l2.6 -10.8l13.6 -1l-14.8 11.6ZM553.3 125.5l-5.7 -6.4l6.3 6.1ZM468.5 75.6l13.1 -22.7l15.2 1.8l1.9 3.2l-16.4 9.8l3.3 6.2l-6.9 9.4l-6.8 3l-3.6 -10.2ZM508.8 81.8l9.7 9.5l-21.6 3.7l-1 -6.2l13.2 -6ZM517.2 91.5l22.2 8.1l-1.3 2l-27.1 6.7l-1.9 -5.9l-14.8 -2.1l4 -6.2l20.6 -0.2ZM498 87.8l-0.9 13.1l-23.4 -9.2l24.4 -4.2ZM480.7 100.8l-17.4 3.2l17.5 -2.5ZM492.8 101.6l-2.1 4.5l-11.8 -0.6l16.3 -5ZM506.2 103.3l7.5 3.4l-4 2.3l-4.2 -5.5ZM509.9 108l-1.5 6.5l-12.7 -0.8l-7.1 -6.7l16.1 -4.2l5.8 6ZM505 83.6l-8.4 6.1l-6.3 -5.2l15 -1.8ZM508 78.2l-16.3 3.6l16.6 -2.9ZM509.6 73.2l-2.4 4.9l-11.7 -2.6l14.4 -0.3ZM475.7 89.5l-4 13.1l-13.3 -0l-0.9 -14.3l17.1 -0.7ZM496 111.6l13.7 0.2l-13.7 7.3l0.8 -7.1ZM503.1 133.1l-6.1 1.3l8.7 0.8ZM497.5 120.3l8.6 -0.5l-12.4 1.8l1.5 10l-5.6 -8.1l7.9 -5.9ZM549.5 130.6l-38.4 -0.2l-5.9 -5.4l37.5 -8.1l7.8 12.9ZM503.9 118l7.8 2l-9.4 -3.7ZM492.3 121.7l-3.8 -0.4l-0.8 -6.2l2.1 5.9ZM479.7 106.6l7.8 2.3l-8.4 1.4l5.2 7.1l-11.9 -8.8l7.4 -2.3ZM464.4 103.3l-10.5 4.1l8.8 -3.5ZM454.3 97l-9.1 -2.9l9.3 1.2ZM457.6 89.8l-1.6 6.1l-9.2 -0.6l9.3 -7ZM417.6 119.2l6.3 -0.8l-1.9 13.1l-4.6 -15.1ZM422.7 130.2l1.2 -10.4l-7.2 -5.6l30.9 2.8l-12.9 14.4l-14.4 -2.1ZM424.5 86.9l-7.5 5.3l3.6 -5.7l5.8 3.3ZM844.7 272.9l2.6 1.9l-5 -6.7l1.7 3.9ZM836.4 244.2l-2.5 -4l0.8 2.1ZM871.7 319.3l-6.1 0.6l-4 -16.9l14.2 8.2l-4.6 6.9ZM854.9 326.7l11.9 -5.5l-8.3 9.7l-12 0.7l7.6 -4.3ZM802.4 319.8l-6.5 6.1l-1.9 -7.1l7.9 2.4ZM748.2 299.1l-25.9 4.4l-5.2 -27.1l19.9 -9.8l11.1 -12.1l7.3 1l7.1 -7.6l10.2 -0.5l-2.4 10.2l12.4 6.2l5.5 -18.7l25.6 43l-8.6 22.6l-7.1 4.3l-14.4 -1.7l-9.8 -7.6l4.2 -5.1l-5.9 4.7l-11.3 -9l-11.2 1.4ZM641.3 202.7l-3.7 1.6l-1.7 -6.8l3.3 3ZM708.3 174.7l2.8 -4.8l-2 5ZM634.9 117.1l0.1 -6.7l19.5 -9.5l21.1 14.3l29.9 0.9l26.3 -10l-9.1 -3.9l14.8 -12.8l22.6 14.2l11.4 -2.8l-12.4 14.2l-30.9 9.4l11.9 4.9l-9.7 6.6l7 14.8l-27.3 20.9l-12.7 -8.8l-15.5 4.2l-6.9 -19.5l-18.8 4.9l-22.6 -8.4l0.9 -6.5l-13.7 -12.9l16.2 -7.1ZM738.6 159.3l-2.5 6.3l0.7 -4ZM464 105.4l9.3 1.8l-2.1 6.3l15 9.6l-9.2 4.7l-13.3 -13.7l-4.3 -1.6l-3.6 -4.4l10.6 -1.3ZM476.5 125.6l-5.4 1.1l6.1 1ZM462.2 121.2l-0.5 5.1l-0 -6.3ZM463.9 85.1l-5.6 -4.4l8.6 -2.7l-2.1 8.5ZM425.5 88.4l-4.6 -3.9l3 4.3ZM433 90.9l-8.6 -8.3l4.6 -6.6l7.6 3.4l-2.8 4.7l9.2 9.9l-17.1 3.4l5 -6.7ZM404.6 57.5l-9.5 6.5l-15.6 -4.1l24.1 -2.9ZM552.1 116.2l10.7 5.4l-1.8 5.1l-9.7 -4.6l1.4 -4.6ZM554.3 124.1l-5 -0.6l4.4 2ZM538.1 115.2l17.2 3.3l-17.5 -3.1ZM739.7 194.6l4.4 -3.5l-5.6 4.6ZM748.2 200.1l-0.9 5.6l-8.4 -2.9l10.7 -3.6ZM729.5 196l2.6 -2.3l-1.1 2.1ZM737.7 174.7l0.5 10.1l3.9 4.3l-8.7 -6l5.4 -7.2ZM747.4 190.6l-3.7 5.3l2 -7.1ZM684.6 202.7l5.7 3.5l4.4 9.4l-8.6 -10.3ZM728.1 210.2l-20.2 8.1l16.2 -15.8l6.3 5.5l-2.3 1.7ZM721.9 207.9l-2.4 3.2l3.4 -4.6ZM473.3 106.1l7 -0.4l-6.2 0.3ZM509.3 52l6.7 15.4l-22.6 3.9l8.4 -9.3l-9.7 -10.1l17.6 -0.3ZM495.9 99.4l-13.9 3.6l13.7 -2.4ZM476.5 95.6l8.7 4.3l-14.5 0.5l5.5 -4.7ZM527.5 184.5l7.2 -9.2l10.9 12.8l-16.9 -1.7ZM785.9 125.5l-4.4 8.8l-20.2 3.9l-3.3 5.2l-0.9 -4l24.6 -12.6l0.6 -6.9l4.8 4.4ZM795.1 111.4l-12 6.4l4.7 -7.7l5 2.7ZM763.7 138.2l4.7 -0.4l-3.5 1ZM297.1 270.3l9.9 7.3l-2.8 9.2l-17.3 -10.9l2.3 -6.5l8.2 0.7ZM565.8 172.9l2.4 9.6l-20.8 6.2l-2 -12.2l21.9 -4.5ZM525 148.7l9.6 -8l22.5 9.7l9.1 12.3l7.4 0.4l1.7 8.7l-31.6 8.1l-17.8 -33.3ZM520.1 133.5l5.6 -0.6l-4.1 -0.1ZM436.3 132.5l-0.6 8.3l-36.8 25.6l20.2 -26.2l6.3 -6.7l9.7 0.9ZM529.1 166.1l-26.7 0.7l-1.8 -24.1l23.3 0.5l-0.2 9.2l-6.3 -6.1l13.2 19ZM499.7 167.1l-2 6.5l-32.4 -14.5l-0.6 -16.6l4.3 -2.8l18.4 4.9l2 -3.6l10.3 0.1l-0.2 24.1ZM556.7 201.9l-20.6 9l-14.5 -10.9l11.5 -16.2l25.1 15.2ZM543.7 189l1.9 3.5l-1.4 -4.2ZM559.6 193.6l-3.7 6.1l-10.6 -5l12.9 -3.6ZM522 221.7l-8.6 2.3l4.5 -12.6l6.8 -0.4l-1.1 11.4ZM512.9 222.7l-2.4 4.3l2.3 -5.8ZM486.9 115.3l-8.4 -7l9.2 3.4l-3.3 4.1ZM494.7 117.4l-4.1 1.3l3.1 -1.5ZM484.7 108.9l9.3 1.1l1 7.3l-8.6 -8.7ZM516.2 212.1l-19.2 -12.2l23.1 -10.8l4.8 15.9l-8.2 6Z"/>
+
+        <!-- Brazil: dark halo + bright fill, gentler jitter to stay recognizable -->
+        <path fill="none" stroke="#0a0e0c" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.5" d="M310.2 303.1l-1.3 -5.4l-9.4 -3.2l9.4 -11.4l-2.8 -0.6l1.6 -4.4l-3.5 -0.1l-0.2 -3l-5.7 -0.9l1.9 -9.7l-2.9 -5l-3.6 0.5l-1.9 -6.1l-12.3 -4.9l0.7 -5.1l-12.6 2.3l0.3 -3.3l-4.7 2.2l-4.7 -7l3.7 -5.6l6.6 -1.9l0 -14.1l6.9 -2.2l4 4.2l5.2 -3.2l-3.4 -5.7l4.3 1.4l5.4 -3.5l2.5 0.2l1.9 9.6l7.7 -1.7l0.5 -2.2l7.1 0.9l3.7 -5l3 6.9l-0.5 4.5l3.4 -0.1l0.1 2.6l2.3 -2.5l7.3 3.5l0.8 3l10.6 -0.7l10.5 6.1l2.8 5.3l-9.9 14.5l-1.8 11.9l-3.3 9.4l-16 6.7l-4.1 9.4l-11.1 12.5Z"/>
+        <path fill="url(#brazilGrad)" stroke="#0a0e0c" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" d="M310.2 303.1l-1.3 -5.4l-9.4 -3.2l9.4 -11.4l-2.8 -0.6l1.6 -4.4l-3.5 -0.1l-0.2 -3l-5.7 -0.9l1.9 -9.7l-2.9 -5l-3.6 0.5l-1.9 -6.1l-12.3 -4.9l0.7 -5.1l-12.6 2.3l0.3 -3.3l-4.7 2.2l-4.7 -7l3.7 -5.6l6.6 -1.9l0 -14.1l6.9 -2.2l4 4.2l5.2 -3.2l-3.4 -5.7l4.3 1.4l5.4 -3.5l2.5 0.2l1.9 9.6l7.7 -1.7l0.5 -2.2l7.1 0.9l3.7 -5l3 6.9l-0.5 4.5l3.4 -0.1l0.1 2.6l2.3 -2.5l7.3 3.5l0.8 3l10.6 -0.7l10.5 6.1l2.8 5.3l-9.9 14.5l-1.8 11.9l-3.3 9.4l-16 6.7l-4.1 9.4l-11.1 12.5Z"/>
+
+        <!-- soft ice cap fades at top + bottom -->
+        <rect x="0" y="0"   width="880" height="56" fill="url(#polarTop)"/>
+        <rect x="0" y="384" width="880" height="56" fill="url(#polarBottom)"/>
+      </symbol>
+    </defs>
+  </svg>
 
   <div class="scene">
     <div class="atmosphere"></div>
 
     <div class="globe">
       <div class="map-track">
-        <!-- three identical copies of the world map for seamless scrolling -->
-        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3a7aa8"/>
-              <stop offset="100%" stop-color="#1f4d77"/>
-            </linearGradient>
-          </defs>
-          <rect width="880" height="440" fill="url(#oceanGrad)"/>
-          <!-- north america -->
-          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- greenland blob -->
-          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
-                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
-          <!-- south america: everything except brazil -->
-          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- brazil (highlighted) -->
-          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
-                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
-          <!-- europe -->
-          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- africa -->
-          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- asia -->
-          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- india -->
-          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- southeast asia / indonesia -->
-          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- australia -->
-          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <!-- antarctica strip -->
-          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
-                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
-        </svg>
-
-        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <use href="#dup"/>
-          <rect width="880" height="440" fill="url(#oceanGrad)"/>
-          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
-                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
-          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
-                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
-                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
-        </svg>
-
-        <svg class="map" viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="880" height="440" fill="url(#oceanGrad)"/>
-          <path d="M 60,90 Q 95,60 160,70 Q 225,78 258,115 Q 278,150 255,185 Q 230,205 190,210 Q 140,215 100,195 Q 65,170 55,135 Q 50,110 60,90 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 280,55 Q 310,50 325,65 Q 330,85 310,95 Q 290,95 280,80 Q 275,65 280,55 Z"
-                fill="#dfe8f0" stroke="#9aaebc" stroke-width="2"/>
-          <path d="M 235,230 Q 250,222 262,228 Q 258,248 256,270 Q 252,300 247,320 Q 240,345 232,360 Q 222,372 215,360 Q 210,345 212,320 Q 214,290 220,265 Q 225,245 235,230 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 262,228 Q 298,232 316,258 Q 326,288 315,312 Q 300,330 282,330 Q 268,328 260,315 Q 253,300 253,280 Q 255,250 262,228 Z"
-                fill="#8dd18d" stroke="#4d8f4d" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 410,105 Q 440,95 470,105 Q 485,118 478,135 Q 465,150 440,152 Q 418,148 405,135 Q 398,120 410,105 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 420,170 Q 460,162 490,180 Q 510,210 508,250 Q 500,295 475,322 Q 452,340 432,330 Q 412,315 405,285 Q 398,245 402,210 Q 408,185 420,170 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 485,85 Q 560,70 650,88 Q 720,100 755,125 Q 770,150 750,170 Q 700,185 620,180 Q 540,172 495,150 Q 475,125 485,85 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 595,185 Q 620,185 628,205 Q 625,225 612,238 Q 600,240 594,225 Q 588,205 595,185 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 680,225 Q 710,222 725,232 Q 720,245 700,247 Q 685,245 678,235 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 700,290 Q 745,282 775,295 Q 790,312 770,325 Q 740,335 710,330 Q 690,320 695,305 Q 697,295 700,290 Z"
-                fill="#5ca65c" stroke="#2f6e2f" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M 0,415 Q 200,395 440,405 Q 680,395 880,415 L 880,440 L 0,440 Z"
-                fill="#e8eef4" stroke="#9aaebc" stroke-width="2"/>
-        </svg>
+        <svg class="map" viewBox="0 0 880 440" aria-hidden="true"><use href="#world-map"/></svg>
+        <svg class="map" viewBox="0 0 880 440" aria-hidden="true"><use href="#world-map"/></svg>
+        <svg class="map" viewBox="0 0 880 440" aria-hidden="true"><use href="#world-map"/></svg>
       </div>
 
-      <div class="shade"></div>
+      <svg class="wire" viewBox="-220 -220 440 440" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="none" stroke="#bfe3ff" stroke-width="1">
+          <circle cx="0" cy="0" r="218"/>
+          <ellipse cx="0" cy="-189" rx="109" ry="15"/>
+          <ellipse cx="0" cy="-154" rx="156" ry="22"/>
+          <ellipse cx="0" cy="-109" rx="189" ry="28"/>
+          <ellipse cx="0" cy="-56"  rx="211" ry="32"/>
+          <ellipse cx="0" cy="0"    rx="218" ry="34"/>
+          <ellipse cx="0" cy="56"   rx="211" ry="32"/>
+          <ellipse cx="0" cy="109"  rx="189" ry="28"/>
+          <ellipse cx="0" cy="154"  rx="156" ry="22"/>
+          <ellipse cx="0" cy="189"  rx="109" ry="15"/>
+          <ellipse cx="0" cy="0" rx="56"  ry="218"/>
+          <ellipse cx="0" cy="0" rx="109" ry="218"/>
+          <ellipse cx="0" cy="0" rx="156" ry="218"/>
+          <ellipse cx="0" cy="0" rx="189" ry="218"/>
+        </g>
+      </svg>
+
+      <div class="lighting"></div>
       <div class="brazil-pulse"></div>
     </div>
 
     <div class="flag-wrap">
       <div class="pole"></div>
 
-      <svg class="logo" viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg" aria-label="Elixir logo">
+      <!-- bobblehead José Valim, holding the pole -->
+      <svg class="bobblehead" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" aria-label="José Valim">
         <defs>
-          <linearGradient id="dropGrad" x1="0.2" y1="0" x2="0.9" y2="1">
-            <stop offset="0%" stop-color="#9966b5"/>
-            <stop offset="55%" stop-color="#6e4a7e"/>
-            <stop offset="100%" stop-color="#3d1f52"/>
-          </linearGradient>
-          <linearGradient id="shineGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#e8d6f0" stop-opacity="0.85"/>
-            <stop offset="100%" stop-color="#e8d6f0" stop-opacity="0"/>
-          </linearGradient>
+          <clipPath id="headClip">
+            <circle cx="35" cy="28" r="26"/>
+          </clipPath>
         </defs>
 
-        <!-- elixir drop: pointed top, rounded bottom -->
+        <!-- body / chest (purple shirt) -->
+        <path d="M 18 56 Q 18 53, 22 53 L 48 53 Q 52 53, 52 56 L 54 90 L 16 90 Z"
+              fill="#5a3270" stroke="#1a0a30" stroke-width="1.4" stroke-linejoin="round"/>
+
+        <!-- collar -->
+        <path d="M 28 53 L 35 62 L 42 53"
+              fill="#3d1f52" stroke="#1a0a30" stroke-width="1"/>
+
+        <!-- left sleeve cap (short) -->
+        <path d="M 16 55 Q 13 60, 14 67 Q 19 70, 25 67 Q 25 60, 22 55 Z"
+              fill="#5a3270" stroke="#1a0a30" stroke-width="1.4" stroke-linejoin="round"/>
+
+        <!-- left forearm (skin, hanging at side) -->
+        <path d="M 14 66 Q 13 76, 14 84 Q 17 88, 22 86 Q 24 76, 25 66 Z"
+              fill="#f4d4b4" stroke="#1a0a30" stroke-width="1.2" stroke-linejoin="round"/>
+
+        <!-- right sleeve cap (short) -->
+        <path d="M 47 55 Q 56 53, 60 60 Q 60 65, 53 64 Q 49 60, 47 56 Z"
+              fill="#5a3270" stroke="#1a0a30" stroke-width="1.4" stroke-linejoin="round"/>
+
+        <!-- right forearm (skin, reaching to pole) -->
+        <path d="M 53 61 Q 66 59, 78 51 Q 84 52, 82 56 Q 70 64, 56 65 Z"
+              fill="#f4d4b4" stroke="#1a0a30" stroke-width="1.2" stroke-linejoin="round"/>
+
+        <!-- right hand on pole -->
+        <ellipse cx="84" cy="50" rx="5" ry="6.5" fill="#f4d4b4" stroke="#1a0a30" stroke-width="1.2"/>
+
+        <!-- HEAD with face image (bobbles) -->
+        <g class="bobble-head">
+          <circle cx="35" cy="28" r="28" fill="#1a0a30"/>
+          <image href="data:image/jpeg;base64,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"
+                 x="9" y="2" width="52" height="52"
+                 clip-path="url(#headClip)"
+                 preserveAspectRatio="xMidYMid slice"/>
+          <circle cx="35" cy="28" r="26" fill="none" stroke="#1a0a30" stroke-width="1.6"/>
+        </g>
+      </svg>
+
+      <div class="finial"></div>
+
+      <!-- posted flag: rectangular banner attached to pole, extending right, with Elixir logo -->
+      <svg class="flag-banner" viewBox="0 0 150 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="0.2">
+            <stop offset="0%"  stop-color="#fbf3fc"/>
+            <stop offset="40%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e7d4ee"/>
+          </linearGradient>
+          <linearGradient id="fabricShade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="rgba(0,0,0,0)"/>
+            <stop offset="50%" stop-color="rgba(0,0,0,0)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
+          </linearGradient>
+          <linearGradient id="dropBody" x1="22%" y1="10%" x2="88%" y2="95%">
+            <stop offset="0%"   stop-color="#a078b8"/>
+            <stop offset="28%"  stop-color="#7a4e96"/>
+            <stop offset="58%"  stop-color="#4a2568"/>
+            <stop offset="85%"  stop-color="#28103e"/>
+            <stop offset="100%" stop-color="#140622"/>
+          </linearGradient>
+          <linearGradient id="flameWisp" x1="35%" y1="0%" x2="45%" y2="100%">
+            <stop offset="0%"   stop-color="#efdcf6" stop-opacity="0.78"/>
+            <stop offset="25%"  stop-color="#c9a5dc" stop-opacity="0.55"/>
+            <stop offset="60%"  stop-color="#8a5fa0" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#8a5fa0" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="bottomShine" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+            <stop offset="40%"  stop-color="#ffffff" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="edgeDark" cx="45%" cy="45%" r="58%">
+            <stop offset="55%"  stop-color="#000" stop-opacity="0"/>
+            <stop offset="92%"  stop-color="#000" stop-opacity="0.32"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
+          </radialGradient>
+          <clipPath id="dropClip">
+            <path d="M19.793 16.575c0 3.752-2.927 7.426-7.743 7.426-5.249 0-7.843-3.71-7.843-8.29 0-5.21 3.892-12.952 8-15.647a.397.397 0 0 1 .61.371 9.716 9.716 0 0 0 1.694 6.518c.522.795 1.092 1.478 1.763 2.352.94 1.227 1.637 1.906 2.644 3.842l.015.028a7.107 7.107 0 0 1 .86 3.4z" transform="translate(53 18) scale(2)"/>
+          </clipPath>
+        </defs>
+
+        <!-- flag fabric: scalloped right edge, slight bottom curve -->
         <path d="
-          M 120 10
-          C 120 10, 60 110, 50 180
-          C 40 260, 90 310, 120 310
-          C 150 310, 200 260, 190 180
-          C 180 110, 120 10, 120 10
+          M 0 2
+          L 136 0
+          Q 146 14, 140 24
+          Q 148 38, 142 50
+          Q 149 62, 143 76
+          Q 147 86, 136 88
+          L 0 90
           Z"
-          fill="url(#dropGrad)"
-          stroke="#2a0f3d"
-          stroke-width="4"
-          stroke-linejoin="round"/>
+          fill="url(#fabric)"
+          stroke="#9a7faf"
+          stroke-width="0.6"/>
 
-        <!-- inner shine highlight -->
+        <!-- shade overlay for cloth depth -->
         <path d="
-          M 110 50
-          C 90 100, 75 150, 78 200
-          C 80 230, 95 255, 110 260"
-          fill="none"
-          stroke="url(#shineGrad)"
-          stroke-width="10"
-          stroke-linecap="round"/>
+          M 0 2
+          L 136 0
+          Q 146 14, 140 24
+          Q 148 38, 142 50
+          Q 149 62, 143 76
+          Q 147 86, 136 88
+          L 0 90
+          Z"
+          fill="url(#fabricShade)" opacity="0.6"/>
 
-        <!-- small shimmer dot -->
-        <circle cx="145" cy="105" r="5" fill="#f0e0f8" opacity="0.6"/>
+        <!-- vertical fabric folds (subtle vertical lines) -->
+        <g stroke="rgba(122, 78, 150, 0.12)" stroke-width="0.5" fill="none">
+          <line x1="30" y1="2" x2="30" y2="88"/>
+          <line x1="60" y1="2" x2="60" y2="88"/>
+          <line x1="90" y1="2" x2="90" y2="88"/>
+          <line x1="118" y1="2" x2="118" y2="88"/>
+        </g>
+
+        <!-- flag binding (darker strip on left where flag attaches to pole) -->
+        <rect x="0" y="0" width="6" height="90" fill="#7a4e96" opacity="0.4"/>
+        <circle cx="3" cy="10"  r="1.6" fill="#3d1f52" opacity="0.55"/>
+        <circle cx="3" cy="80" r="1.6" fill="#3d1f52" opacity="0.55"/>
+
+        <!-- Elixir drop, scaled to fit: viewBox 24x24 -> ~48x48 area centered -->
+        <g transform="translate(53 18) scale(2)">
+          <path d="M19.793 16.575c0 3.752-2.927 7.426-7.743 7.426-5.249 0-7.843-3.71-7.843-8.29 0-5.21 3.892-12.952 8-15.647a.397.397 0 0 1 .61.371 9.716 9.716 0 0 0 1.694 6.518c.522.795 1.092 1.478 1.763 2.352.94 1.227 1.637 1.906 2.644 3.842l.015.028a7.107 7.107 0 0 1 .86 3.4z" fill="url(#dropBody)"/>
+        </g>
+
+        <!-- inner wisps inside drop, clipped -->
+        <g clip-path="url(#dropClip)">
+          <path d="M75 24 C68 30 60 40 56 50 C53 60 56 70 62 76 C58 68 58 56 62 46 C66 36 70 30 75 24 Z"
+                fill="url(#flameWisp)"/>
+          <path d="M82 30 C76 36 70 46 70 56 C70 65 75 73 82 76 C77 68 76 58 79 50 C82 42 84 36 82 30 Z"
+                fill="url(#flameWisp)" opacity="0.7"/>
+        </g>
+
+        <!-- edge darkening on the drop -->
+        <g transform="translate(53 18) scale(2)">
+          <path d="M19.793 16.575c0 3.752-2.927 7.426-7.743 7.426-5.249 0-7.843-3.71-7.843-8.29 0-5.21 3.892-12.952 8-15.647a.397.397 0 0 1 .61.371 9.716 9.716 0 0 0 1.694 6.518c.522.795 1.092 1.478 1.763 2.352.94 1.227 1.637 1.906 2.644 3.842l.015.028a7.107 7.107 0 0 1 .86 3.4z" fill="url(#edgeDark)"/>
+        </g>
+
+        <!-- bottom shine -->
+        <ellipse cx="84" cy="68" rx="3" ry="1.5" fill="url(#bottomShine)"/>
+
+        <!-- crisp outline -->
+        <g transform="translate(53 18) scale(2)">
+          <path d="M19.793 16.575c0 3.752-2.927 7.426-7.743 7.426-5.249 0-7.843-3.71-7.843-8.29 0-5.21 3.892-12.952 8-15.647a.397.397 0 0 1 .61.371 9.716 9.716 0 0 0 1.694 6.518c.522.795 1.092 1.478 1.763 2.352.94 1.227 1.637 1.906 2.644 3.842l.015.028a7.107 7.107 0 0 1 .86 3.4z" fill="none" stroke="#160722" stroke-width="0.18" stroke-linejoin="round" opacity="0.7"/>
+        </g>
       </svg>
 
       <div class="sparkle s1"></div>
@@ -460,7 +545,5 @@
       <div class="sparkle s5"></div>
     </div>
   </div>
-
-  <div class="tagline">where Elixir meets Brazil</div>
 </body>
 </html>
