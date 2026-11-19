@@ -1,0 +1,29 @@
+name: Add a company
+description: Suggest a company with an Elixir team for Elixir Land.
+title: "Add company: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We list a company when 2 or more people mention Elixir on a LinkedIn job experience at that company. Elixir can be a skill on the job, or it can be in the job title or the job description.
+
+        This issue is public. Send the company page only. Do not send links to personal profiles.
+  - type: input
+    id: linkedin
+    attributes:
+      label: Company LinkedIn URL
+      placeholder: https://www.linkedin.com/company/your-company
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: Company website
+      placeholder: https://your-company.com
+  - type: checkboxes
+    id: company-page
+    attributes:
+      label: Check
+      options:
+        - label: This URL is a company page, not a personal profile.
+          required: true

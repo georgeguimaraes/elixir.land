@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elixir Land</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3E.p%7Bstroke:%231b1528%7D.a%7Bfill:%235a2ea6%3Bstroke:%235a2ea6%7D%40media %28prefers-color-scheme: dark%29%7B.p%7Bstroke:%23ebe7f4%7D.a%7Bfill:%23b394f2%3Bstroke:%23b394f2%7D%7D%3C/style%3E%3Cpath class='a' d='M1.5 30c4.5-6.5 9.5-9 14.5-9s10 2.5 14.5 9Z' opacity='.22' stroke='none'/%3E%3Cpath class='p' d='M11 24.5V4' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath class='a' d='M14.5 4.5 25.5 10l-11 5.5Z' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="description" content="Elixir Land, an atlas of who runs Elixir in production: companies with Elixir teams, by country, sector and team size.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>
+  (() => { try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {} })();
+</script>
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+
+<header class="sticky top-[env(safe-area-inset-top,0px)] z-[5] border-b border-line bg-paper/88 backdrop-blur-[10px]">
+  <div class="wrap flex items-center gap-6 py-3">
+    <a class="flex items-center gap-2.5 font-display text-[1.55rem] leading-none font-normal" href="#top" aria-label="Elixir Land home">
+      <svg class="size-[30px] flex-none" viewBox="0 0 32 32" aria-hidden="true"><path d="M1.5 30c4.5-6.5 9.5-9 14.5-9s10 2.5 14.5 9Z" fill="var(--accent)" opacity=".22"/><path d="M11 24.5V4" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M14.5 4.5 25.5 10l-11 5.5Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      Elixir Land
+    </a>
+    <nav class="ml-auto flex items-center gap-5 [&>a:not(.btn)]:text-small [&>a:not(.btn)]:font-medium [&>a:not(.btn)]:text-muted [&>a:not(.btn)]:hover:text-ink max-[720px]:[&>a:not(.btn)]:hidden" aria-label="Main">
+      <a href="#directory">Directory</a>
+      <a href="#countries">Countries</a>
+      <a href="#method">Method</a>
+      <button type="button" class="group grid size-[34px] cursor-pointer place-items-center rounded-full border border-line text-muted hover:border-line-strong hover:text-ink" id="theme-toggle" aria-label="Switch to dark theme">
+        <svg class="group-data-[dark=true]:hidden" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <svg class="hidden group-data-[dark=true]:block" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.3M8 13.2v1.3M1.5 8h1.3M13.2 8h1.3M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <a class="btn btn-neutral btn-sm h-[38px] px-3.5 text-small font-medium" href="#add">Add your company</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section id="countries">
+    <div class="wrap grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] items-end gap-12 pt-14 pb-10 max-[900px]:grid-cols-1 max-[900px]:gap-8 max-[900px]:pt-9 max-[900px]:pb-7">
+      <div>
+        <div class="eyebrow">An atlas of Elixir in production · Snapshot of <span id="snapshot"></span></div>
+        <h1 class="mt-3.5 mb-[18px] font-display text-hero leading-[0.95] font-normal tracking-[-0.012em] text-balance">Who runs Elixir <em class="text-primary italic">in production.</em></h1>
+        <p class="max-w-[34em] text-lead text-pretty text-muted" id="lede">Companies with Elixir teams, where they are and how big their teams are. Validated using people's work descriptions.</p>
+        <div class="mt-7 flex flex-wrap gap-7 border-t border-line pt-5" id="facts"></div>
+      </div>
+      <figure class="rounded-box border border-line bg-surface px-5 pt-5 pb-3.5" aria-labelledby="chart-title">
+        <h2 class="mb-3 font-display text-heading leading-tight font-normal" id="chart-title">Companies by country</h2>
+        <ul class="grid gap-1" id="bars"></ul>
+        <div class="mt-3 flex gap-4 text-[0.75rem] text-faint">
+          <span><i class="mr-1.5 inline-block size-2.5 rounded-[2px] bg-primary align-[-1px]"></i>Elixir in use now</span>
+          <span><i class="mr-1.5 inline-block size-2.5 rounded-[2px] bg-primary/40 align-[-1px]"></i>Used it before</span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="border-t border-line" id="directory">
+    <div class="wrap pt-8 pb-16">
+      <div class="mb-[18px] flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div class="eyebrow">Directory</div>
+          <h2 class="mt-1.5 font-display text-[2.1rem] leading-tight font-normal" id="result-title">644 companies</h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="inline-flex rounded-full border border-line-strong bg-surface p-[3px] [&>button]:cursor-pointer [&>button]:rounded-full [&>button]:px-3 [&>button]:py-[7px] [&>button]:text-small [&>button]:font-medium [&>button]:whitespace-nowrap [&>button]:text-muted [&>button[aria-pressed=true]]:bg-ink [&>button[aria-pressed=true]]:text-paper" role="group" aria-label="Elixir status">
+            <button type="button" data-status="all" aria-pressed="true">All</button>
+            <button type="button" data-status="active" aria-pressed="false">In use now</button>
+            <button type="button" data-status="past" aria-pressed="false">Used before</button>
+          </div>
+          <select class="select select-sm h-[38px] w-auto rounded-full border-line-strong bg-surface text-small" id="sort" aria-label="Sort companies">
+            <option value="now">Largest team now</option>
+            <option value="all">Largest team all time</option>
+            <option value="since">Earliest adopters</option>
+            <option value="last">Most recent use</option>
+            <option value="size">Largest company</option>
+            <option value="name">Name A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="input h-[47px] w-full rounded-full px-3.5 border-line-strong bg-surface text-body">
+        <svg class="text-faint" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input class="grow placeholder:text-faint" id="q" type="search" placeholder="Search companies, cities or domains" autocomplete="off" aria-label="Search companies">
+      </label>
+
+      <div class="mt-4 mb-[22px] overflow-x-auto rounded-box border border-line bg-surface px-4 py-3 font-mono text-[0.8rem] leading-[1.9]" aria-live="polite"><code class="flex flex-wrap items-center gap-x-1.5 gap-y-1 whitespace-nowrap" id="pipeline"></code></div>
+
+      <div class="grid grid-cols-[240px_minmax(0,1fr)] items-start gap-8 max-[1000px]:grid-cols-[200px_minmax(0,1fr)] max-[1000px]:gap-5 max-[820px]:grid-cols-1 max-[820px]:gap-4">
+        <details class="filters max-[820px]:rounded-box max-[820px]:border max-[820px]:border-line max-[820px]:bg-surface" id="filters" open>
+          <summary class="filters-summary hidden cursor-pointer list-none items-center gap-2.5 px-4 py-3 text-small font-semibold max-[820px]:flex"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M4.5 8h7M7 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Filters</span><span class="ml-auto font-mono font-medium text-primary" id="filter-count"></span></summary>
+          <div class="max-[820px]:px-4 max-[820px]:py-1 [&>div]:mb-5 [&>div]:border-b [&>div]:border-line [&>div]:pb-5 [&>div:last-child]:border-b-0">
+            <div>
+              <h3 class="eyebrow mb-2.5">Country</h3>
+              <ul class="grid gap-px" id="f-country"></ul>
+              <button type="button" class="mt-1.5 cursor-pointer px-2 py-1 text-small font-semibold text-primary" id="more-country">Show all countries</button>
+            </div>
+            <div>
+              <h3 class="eyebrow mb-2.5">Sector</h3>
+              <ul class="grid gap-px" id="f-sector"></ul>
+              <button type="button" class="mt-1.5 cursor-pointer px-2 py-1 text-small font-semibold text-primary" id="more-sector">Show all sectors</button>
+            </div>
+            <div>
+              <h3 class="eyebrow mb-2.5">Elixir team now</h3>
+              <div class="flex flex-wrap gap-1.5" id="f-team-now"></div>
+            </div>
+            <div>
+              <h3 class="eyebrow mb-2.5">Elixir team, all time</h3>
+              <div class="flex flex-wrap gap-1.5" id="f-team-all"></div>
+            </div>
+            <div>
+              <h3 class="eyebrow mb-2.5">Company size</h3>
+              <div class="flex flex-wrap gap-1.5" id="f-size"></div>
+            </div>
+          </div>
+        </details>
+
+        <div class="min-w-0">
+          <div class="row-grid eyebrow border-b border-line-strong px-3.5 pb-2.5 max-[620px]:hidden" aria-hidden="true">
+            <span>In use</span>
+            <span>Company</span>
+            <span>Headquarters</span>
+            <span class="max-[1000px]:hidden">Sector</span>
+            <span class="max-[1000px]:hidden">Employees</span>
+            <span>Elixir team</span>
+            <span class="max-[1000px]:hidden">Since</span>
+            <span>Last use</span>
+            <span class="invisible"></span>
+          </div>
+          <div id="rows"></div>
+          <div class="flex flex-wrap items-center justify-center gap-3.5 pt-6 text-small text-faint">
+            <span class="inline-flex items-center gap-1.5 text-tiny text-muted"><span class="size-[9px] flex-none rounded-full bg-primary shadow-[0_0_0_3px_var(--accent-soft)]"></span>In use now</span>
+            <span class="inline-flex items-center gap-1.5 text-tiny text-muted"><span class="size-[9px] flex-none rounded-full border-[1.5px] border-faint"></span>Used before</span>
+            <span class="tabular-nums" id="showing"></span>
+            <button type="button" class="btn btn-sm h-[38px] rounded-full border-line-strong bg-surface px-3.5 text-small font-semibold text-faint hover:border-ink" id="more">Show 40 more</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="wrap py-14">
+      <div class="mb-8 grid grid-cols-2 items-end gap-8 max-[960px]:grid-cols-1 max-[960px]:gap-3">
+        <div>
+          <div class="eyebrow">Method</div>
+          <h2 class="mt-2.5 font-display text-section leading-[1] font-normal tracking-[-0.01em] text-balance">How we build this list</h2>
+        </div>
+        <p class="max-w-[36em] text-muted">We scan public LinkedIn profiles for job experiences that mention Elixir. Then we group those experiences by company.</p>
+      </div>
+      <div class="grid grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] items-start gap-8 max-[960px]:grid-cols-1">
+        <div class="text-muted [&_b]:font-semibold [&_b]:text-ink [&_h3]:mb-2.5 [&_h3]:font-display [&_h3]:text-heading [&_h3]:leading-tight [&_h3]:font-normal [&_h3]:text-ink [&_h3:not(:first-child)]:mt-7 [&>p]:max-w-[40em] [&>ul]:grid [&>ul]:max-w-[40em] [&>ul]:list-disc [&>ul]:gap-2 [&>ul]:pl-[1.2em]">
+          <h3>What counts</h3>
+          <ul>
+            <li><b>A person</b> counts when one of their job experiences mentions Elixir: as a skill on the job, in the job title or in the job description.</li>
+            <li><b>A company</b> is listed when 2 or more people have such an experience there.</li>
+            <li><b>In use</b> means that at least one of those people still has the job.</li>
+            <li><b>Elixir team now</b> counts the people who have the job today. <b>Elixir team, all time</b> counts everyone who had it.</li>
+            <li><b>Since</b> and <b>Last use</b> are the first and the most recent year in which one of them had the job.</li>
+            <li><b>Location, sector and company size</b> come from public company information.</li>
+          </ul>
+          <h3>What we do not show</h3>
+          <p>We never show people, names or profile links. Team sizes show as ranges, so a listing never gives an exact number of people.</p>
+          <h3>Limits</h3>
+          <ul>
+            <li>We only find people who mention Elixir on a LinkedIn job experience. The profile headline and the "About" section do not count.</li>
+            <li>Coverage is not equal in all countries. The scan has more profiles from some regions than from others.</li>
+            <li>A team can still use Elixir after its "Last use" year if nobody updated their profile.</li>
+          </ul>
+        </div>
+        <article class="card min-w-0 gap-3.5 rounded-box border border-line bg-surface p-[22px]" id="add">
+          <div class="flex items-center justify-between gap-2"><span class="eyebrow">Your company</span></div>
+          <h3 class="font-display text-heading leading-tight font-normal">Add your company</h3>
+          <ol class="grid list-decimal gap-1.5 pl-[1.2em] text-small text-muted">
+            <li>On LinkedIn, mention Elixir on your current job: add it as a skill on the job, or write it in the job title or the job description.</li>
+            <li>Ask one more person on your team to do the same. We list a company when 2 or more people use Elixir there.</li>
+            <li>Send us the LinkedIn URL of the company, for example linkedin.com/company/your-company.</li>
+          </ol>
+          <a class="btn btn-neutral btn-sm h-[38px] self-start px-3.5 text-small font-semibold" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=add-company.yml">Send the company URL</a>
+          <p class="text-small text-muted">The button opens a public issue on GitHub. Send the company page only, not links to personal profiles.</p>
+          <p class="text-small text-muted [&_a]:underline [&_a]:hover:text-ink"><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20">Correct a listing</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap grid grid-cols-[minmax(0,1.4fr)_repeat(2,minmax(0,1fr))] gap-8 pt-10 pb-14 text-small text-muted max-[760px]:grid-cols-1 max-[760px]:gap-6 [&_a]:hover:text-ink [&_a]:hover:underline [&_h4]:mb-2.5 [&_h4]:font-mono [&_h4]:text-micro [&_h4]:font-medium [&_h4]:tracking-[0.08em] [&_h4]:text-ink [&_h4]:uppercase [&_p]:mb-2 [&_p]:max-w-[40em] [&_ul]:grid [&_ul]:gap-1.5">
+    <div>
+      <h4>About</h4>
+      <p>Elixir Land is a community project. It is not affiliated with the Elixir team.</p>
+      <p><a href="#method">How we build this list</a></p>
+      <p class="text-faint">Made with 💜 by <a class="text-muted" href="https://github.com/georgeguimaraes">@georgeguimaraes</a></p>
+    </div>
+    <div>
+      <h4>Your company</h4>
+      <ul>
+        <li><a href="#add">Add your company</a></li>
+        <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20">Correct a listing</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Data</h4>
+      <ul>
+        <li><a href="https://github.com/georgeguimaraes/elixir.land">Source on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+(function () {
+  const COUNTRIES = ATLAS.countries;
+  const TEAM_ALL = ["Under 5", "5 to 9", "10 to 24", "25 to 49", "50 to 99", "100+"];
+  const TEAM_NOW = ["0", "Under 5", "5 to 9", "10 to 24", "25 to 49", "50 to 99", "100+"];
+  const SIZES = ["0-1", "2-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+"];
+  const SIZE_LABEL = { "0-1": "0 to 1", "2-10": "2 to 10", "11-50": "11 to 50", "51-200": "51 to 200", "201-500": "201 to 500", "501-1000": "501 to 1K", "1001-5000": "1K to 5K", "5001-10000": "5K to 10K", "10001+": "10K+" };
+  /* The full LinkedIn band for the detail panel, so "1001-5000" reads "1,001 to 5,000". */
+  const sizeFull = (size) => size.split("-").map((n) => Number.parseInt(n, 10).toLocaleString("en")).join(" to ") + (size.endsWith("+") ? "+" : "");
+  const PAGE = 40;
+  const NUMERIC = new Set(["teamNow", "teamAll"]);
+
+  /* Class lists that the templates below repeat. Tailwind reads them from this file, so they stay as full strings. */
+  const BTN_MAIN = "btn btn-sm btn-primary px-3.5";
+  const BTN_SOFT = "btn btn-sm btn-soft btn-primary px-3.5";
+  const BTN_QUIET = "btn btn-sm btn-ghost px-3 font-medium text-muted hover:text-ink";
+  const ICON_OUT = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6.5 5H11v4.5"/></svg>`;
+  const ICON_EDIT = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 2.5 13.5 5.5 6 13H3v-3Z"/></svg>`;
+  const CELL = "min-w-0 truncate text-small text-muted";
+  const DOT_ACTIVE = "size-[9px] flex-none rounded-full bg-primary shadow-[0_0_0_3px_var(--accent-soft)]";
+  const DOT_PAST = "size-[9px] flex-none rounded-full border-[1.5px] border-faint";
+  const STATUS = "inline-flex items-center gap-1.5 text-tiny text-muted";
+  const FN = "text-ink", OP = "font-medium text-pipe", STR = "text-string", ATOM = "text-atom", NOTE = "ml-2 text-faint";
+
+  const NOW = 9999;
+  const slug = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const companies = ATLAS.rows.map((r, i) => ({
+    id: slug(r[0]) || "company-" + i,
+    name: r[0], city: r[1], cc: r[2], country: COUNTRIES[r[2]] || "",
+    site: r[3], url: r[4], sector: r[5], size: r[6],
+    teamAll: r[7], since: r[8], last: r[9], active: r[9] === NOW, teamNow: r[10], about: r[11], linkedin: r[12] ? `https://www.linkedin.com/company/${r[12]}/` : "", rank: i
+  }));
+  const byId = new Map(companies.map((c) => [c.id, c]));
+
+  const state = { q: "", country: null, sector: null, teamNow: null, teamAll: null, size: null, status: "all", sort: "now", limit: PAGE, open: null, allCountries: false, allSectors: false };
+
+  const $ = (id) => document.getElementById(id);
+
+  const systemDark = matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => (document.documentElement.dataset.theme || (systemDark.matches ? "dark" : "light")) === "dark";
+  function syncTheme() {
+    const dark = isDark();
+    $("theme-toggle").dataset.dark = String(dark);
+    $("theme-toggle").setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+  }
+  $("theme-toggle").addEventListener("click", () => {
+    const theme = isDark() ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem("theme", theme); } catch (e) {}
+    syncTheme();
+  });
+  systemDark.addEventListener("change", syncTheme);
+  syncTheme();
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (n) => n.toLocaleString("en-US");
+  const sinceLabel = (y) => (y ? String(y) : "Unknown");
+  const lastLabel = (y) => (y === NOW ? "Now" : sinceLabel(y));
+
+  function matches(c, f, skip) {
+    if (f.q) {
+      const hay = (c.name + " " + c.city + " " + c.country + " " + c.site + " " + c.sector + " " + c.about).toLowerCase();
+      if (!hay.includes(f.q.toLowerCase())) return false;
+    }
+    if (skip !== "country" && f.country && c.cc !== f.country) return false;
+    if (skip !== "sector" && f.sector && c.sector !== f.sector) return false;
+    if (skip !== "teamNow" && f.teamNow != null && c.teamNow !== f.teamNow) return false;
+    if (skip !== "teamAll" && f.teamAll != null && c.teamAll !== f.teamAll) return false;
+    if (skip !== "size" && f.size && c.size !== f.size) return false;
+    if (skip !== "status" && f.status === "active" && !c.active) return false;
+    if (skip !== "status" && f.status === "past" && c.active) return false;
+    return true;
+  }
+  const filtered = (f, skip) => companies.filter((c) => matches(c, f, skip));
+
+  function sortList(list, sort) {
+    const s = list.slice();
+    if (sort === "name") s.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sort === "since") s.sort((a, b) => (a.since || 9999) - (b.since || 9999) || a.rank - b.rank);
+    else if (sort === "last") s.sort((a, b) => b.last - a.last || a.rank - b.rank);
+    else if (sort === "size") s.sort((a, b) => SIZES.indexOf(b.size) - SIZES.indexOf(a.size) || a.rank - b.rank);
+    else if (sort === "now") s.sort((a, b) => b.teamNow - a.teamNow || a.rank - b.rank);
+    else s.sort((a, b) => a.rank - b.rank);
+    return s;
+  }
+
+  function countBy(list, key) {
+    const m = new Map();
+    for (const c of list) { const k = c[key]; if (k === "" || k === null || k === undefined) continue; m.set(k, (m.get(k) || 0) + 1); }
+    return m;
+  }
+
+  /* Masthead */
+  function renderFacts() {
+    const active = companies.filter((c) => c.active).length;
+    const countries = new Set(companies.map((c) => c.cc).filter(Boolean)).size;
+    $("facts").innerHTML = [
+      [fmt(companies.length), "companies with Elixir teams"],
+      [fmt(active), "using Elixir today"],
+      [fmt(countries), "countries"]
+    ].map(([n, l]) => `<div><b class="block font-display text-[2.4rem] leading-[1.05] font-normal tabular-nums">${n}</b><span class="text-small text-muted">${l}</span></div>`).join("");
+  }
+
+  function renderBars() {
+    const all = countBy(companies, "cc");
+    const act = countBy(companies.filter((c) => c.active), "cc");
+    const top = [...all.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9);
+    const max = top[0][1];
+    $("bars").innerHTML = top.map(([cc, n]) => {
+      const a = act.get(cc) || 0;
+      return `<li><button type="button" class="grid w-full cursor-pointer grid-cols-[9.5em_minmax(0,1fr)_2.6em] items-center gap-2.5 rounded-md px-1.5 py-[5px] text-left text-small hover:bg-primary-soft aria-pressed:bg-primary-soft" data-cc="${cc}" aria-pressed="${state.country === cc}" aria-label="${esc(COUNTRIES[cc])}: ${n} companies, ${a} using Elixir now">
+        <span class="truncate">${esc(COUNTRIES[cc])}</span>
+        <span class="relative h-2.5 overflow-hidden rounded-[3px] bg-line"><span class="absolute inset-y-0 left-0 rounded-[3px] bg-primary/40" style="width:${(n / max * 100).toFixed(2)}%"></span><span class="absolute inset-y-0 left-0 rounded-[3px] bg-primary" style="width:${(a / max * 100).toFixed(2)}%"></span></span>
+        <span class="text-right text-muted tabular-nums">${n}</span>
+      </button></li>`;
+    }).join("");
+  }
+
+  /* Pipeline */
+  function renderPipeline(count) {
+    const steps = [];
+    if (state.q) steps.push(["q", `<span class="${FN}">search(</span><span class="${STR}">"${esc(state.q)}"</span><span class="${FN}">)</span>`]);
+    if (state.country) steps.push(["country", `<span class="${FN}">where(country: </span><span class="${ATOM}">:${state.country.toLowerCase()}</span><span class="${FN}">)</span>`]);
+    if (state.sector) steps.push(["sector", `<span class="${FN}">where(sector: </span><span class="${STR}">"${esc(state.sector)}"</span><span class="${FN}">)</span>`]);
+    if (state.teamNow !== null) steps.push(["teamNow", `<span class="${FN}">where(team_now: </span><span class="${STR}">"${TEAM_NOW[state.teamNow]}"</span><span class="${FN}">)</span>`]);
+    if (state.teamAll !== null) steps.push(["teamAll", `<span class="${FN}">where(team_all_time: </span><span class="${STR}">"${TEAM_ALL[state.teamAll]}"</span><span class="${FN}">)</span>`]);
+    if (state.size) steps.push(["size", `<span class="${FN}">where(employees: </span><span class="${STR}">"${state.size}"</span><span class="${FN}">)</span>`]);
+    if (state.status !== "all") steps.push(["status", `<span class="${FN}">where(status: </span><span class="${ATOM}">:${state.status}</span><span class="${FN}">)</span>`]);
+    const order = { now: "desc: :team_now", all: "desc: :team_all_time", since: "asc: :since", last: "desc: :last_use", size: "desc: :employees", name: "asc: :name" }[state.sort];
+    const parts = [`<span class="${FN}">Land.companies()</span>`];
+    for (const [key, html] of steps) {
+      parts.push(`<span class="${OP}">|&gt;</span><span class="inline-flex items-center gap-1.5 rounded-md bg-primary-soft pr-1 pl-2">${html}<button type="button" class="grid size-[18px] cursor-pointer place-items-center rounded text-[0.85rem] leading-none text-muted hover:bg-line-strong hover:text-ink" data-clear="${key}" aria-label="Remove this filter">×</button></span>`);
+    }
+    parts.push(`<span class="${OP}">|&gt;</span><span class="${FN}">order_by(${order.replace(/(:\w+)$/, `<span class="${ATOM}">$1</span>`)})</span>`);
+    parts.push(`<span class="${NOTE}"># =&gt; ${fmt(count)} ${count === 1 ? "company" : "companies"}</span>`);
+    $("pipeline").innerHTML = parts.join(" ");
+    const n = steps.filter(([k]) => k !== "q").length;
+    $("filter-count").textContent = n ? `${n} active` : "";
+  }
+
+  /* Facets */
+  function facetList(el, key, label, showAll, cap) {
+    const counts = countBy(filtered(state, key === "cc" ? "country" : key), key);
+    const totals = countBy(companies, key);
+    let keys = [...totals.keys()].sort((a, b) => (counts.get(b) || 0) - (counts.get(a) || 0) || (totals.get(b) - totals.get(a)));
+    if (!showAll) keys = keys.slice(0, cap);
+    if (state[key] && !keys.includes(state[key])) keys.unshift(state[key]);
+    el.innerHTML = keys.map((k) => {
+      const n = counts.get(k) || 0;
+      const on = state[key] === k;
+      return `<li><button type="button" class="group flex w-full cursor-pointer justify-between gap-2 rounded-md px-2 py-[5px] text-left text-small hover:bg-primary-soft aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent" data-facet="${key}" data-value="${esc(k)}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""}>
+        <span>${esc(label(k))}</span><span class="text-faint tabular-nums group-aria-pressed:text-paper group-aria-pressed:opacity-70">${n}</span></button></li>`;
+    }).join("");
+  }
+
+  function chipFacet(el, key, values, label) {
+    const counts = countBy(filtered(state, key), key);
+    el.innerHTML = values.map((v) => {
+      const n = counts.get(v) || 0;
+      const on = state[key] === v;
+      return `<button type="button" class="cursor-pointer rounded-full border border-line-strong bg-surface px-2.5 py-[5px] text-tiny tabular-nums hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-default disabled:opacity-40" data-facet="${key}" data-value="${v}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""} title="${n} companies">${esc(label(v))}</button>`;
+    }).join("");
+  }
+
+  /* Rows */
+  function meter(level) {
+    let html = '<span class="inline-grid grid-cols-[repeat(5,5px)] gap-0.5" aria-hidden="true">';
+    for (let i = 1; i <= 5; i++) html += `<i class="h-3 rounded-[1px] ${level >= i ? "bg-primary" : "bg-line-strong"}"></i>`;
+    return html + "</span>";
+  }
+
+  function rowHTML(c) {
+    const open = state.open === c.id;
+    const place = c.city || c.country;
+    const badge = c.cc ? `<span class="mr-1.5 inline-block min-w-[2.2em] rounded border border-line-strong px-[5px] py-px text-center font-mono text-[0.68rem] text-ink">${c.cc}</span>` : "";
+    const loc = badge + (place ? esc(place) : `<span class="text-faint">Unknown</span>`);
+    const status = c.active
+      ? `<span class="${STATUS}"><span class="${DOT_ACTIVE}"></span>In use now</span>`
+      : `<span class="${STATUS}"><span class="${DOT_PAST}"></span>${c.last ? "Last used " + c.last : "Last use unknown"}</span>`;
+    const detail = open ? `
+      <div class="grid grid-cols-2 gap-6 px-3.5 pt-1 pb-5 max-[620px]:grid-cols-1" id="detail-${c.id}">
+        <dl class="grid grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-[18px] gap-y-1.5 text-small [&_dt]:text-faint">
+          <dt>Headquarters</dt><dd>${esc([c.city, c.country].filter(Boolean).join(", ") || "Unknown")}</dd>
+          <dt>Sector</dt><dd>${esc(c.sector || "Unknown")}</dd>
+          <dt>Employees</dt><dd>${c.size ? sizeFull(c.size) + " employees" : "Unknown"}</dd>
+          <dt>Elixir team now</dt><dd>${TEAM_NOW[c.teamNow]} people</dd>
+          <dt>Elixir team, all time</dt><dd>${TEAM_ALL[c.teamAll]} people</dd>
+          <dt>First Elixir role</dt><dd>${sinceLabel(c.since)}</dd>
+          <dt>Last Elixir role</dt><dd>${c.active ? "Now, someone has the role today" : lastLabel(c.last)}</dd>
+        </dl>
+        ${c.about ? `<div><div class="eyebrow mb-2">About</div><p class="max-w-[40em] text-small text-muted">${esc(c.about)}</p></div>` : ""}
+        <div class="col-span-full flex flex-wrap items-center gap-2">
+          ${c.url ? `<a class="${BTN_MAIN}" href="${esc(c.url)}" target="_blank" rel="noopener">Visit ${esc(c.site)}${ICON_OUT}</a>` : ""}
+          ${c.linkedin ? `<a class="${BTN_SOFT}" href="${c.linkedin}" target="_blank" rel="noopener">LinkedIn${ICON_OUT}</a>` : ""}
+          <a class="${BTN_QUIET} ml-auto" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&title=${encodeURIComponent("Correct listing: " + c.name)}&company=${encodeURIComponent(c.name)}" target="_blank" rel="noopener">${ICON_EDIT}Correct this listing</a>
+        </div>
+      </div>` : "";
+    return `<div class="border-b border-line${open ? " bg-surface" : ""}">
+      <button type="button" class="row-grid w-full cursor-pointer px-3.5 py-[13px] text-left hover:bg-surface" data-open="${c.id}" aria-expanded="${open}" aria-controls="detail-${c.id}">
+        <span class="flex h-[1lh] items-center justify-end self-start text-body max-[620px]:hidden"><span class="${c.active ? DOT_ACTIVE : DOT_PAST}" title="${c.active ? "Elixir in use now" : c.last ? "Last used Elixir in " + c.last : "Used Elixir before"}"></span></span>
+        <span class="min-w-0 max-[620px]:[grid-area:name]"><span class="block truncate text-body font-semibold">${esc(c.name)}</span><span class="block truncate font-mono text-tiny text-faint">${esc(c.site || "no website listed")}</span></span>
+        <span class="${CELL} max-[620px]:[grid-area:loc]">${loc}</span>
+        <span class="${CELL} max-[1000px]:hidden">${esc(c.sector || "Unknown")}</span>
+        <span class="${CELL} tabular-nums max-[1000px]:hidden">${esc(SIZE_LABEL[c.size] || "Unknown")}</span>
+        <span class="min-w-0 max-[620px]:justify-self-end max-[620px]:[grid-area:team]"><span class="flex items-center gap-2">${meter(c.teamNow)}<span class="text-tiny whitespace-nowrap tabular-nums ${c.teamNow ? "text-ink" : "text-faint"}">${TEAM_NOW[c.teamNow]} now</span></span><span class="block truncate text-tiny text-faint tabular-nums">${TEAM_ALL[c.teamAll]} all time</span></span>
+        <span class="${CELL} tabular-nums max-[1000px]:hidden">${sinceLabel(c.since)}</span>
+        <span class="${CELL} tabular-nums max-[620px]:hidden">${lastLabel(c.last)}</span>
+        <span class="hidden max-[620px]:block max-[620px]:justify-self-end max-[620px]:[grid-area:status]">${status}</span>
+        <svg class="justify-self-end text-faint max-[620px]:hidden${open ? " rotate-90" : ""}" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>${detail}
+    </div>`;
+  }
+
+  function render() {
+    const list = sortList(filtered(state), state.sort);
+    $("result-title").textContent = `${fmt(list.length)} ${list.length === 1 ? "company" : "companies"}`;
+    renderPipeline(list.length);
+    renderBars();
+    facetList($("f-country"), "cc", (k) => COUNTRIES[k] || k, state.allCountries, 8);
+    facetList($("f-sector"), "sector", (k) => k, state.allSectors, 8);
+    chipFacet($("f-team-now"), "teamNow", [6, 5, 4, 3, 2, 1], (v) => TEAM_NOW[v]);
+    chipFacet($("f-team-all"), "teamAll", [5, 4, 3, 2, 1, 0], (v) => TEAM_ALL[v]);
+    chipFacet($("f-size"), "size", SIZES.slice().reverse(), (v) => SIZE_LABEL[v]);
+    $("more-country").textContent = state.allCountries ? "Show fewer" : `Show all ${new Set(companies.map((c) => c.cc).filter(Boolean)).size} countries`;
+    $("more-sector").textContent = state.allSectors ? "Show fewer" : "Show all sectors";
+    const shown = list.slice(0, state.limit);
+    $("rows").innerHTML = shown.length ? shown.map(rowHTML).join("") :
+      `<div class="px-3.5 py-12 text-center text-muted">No companies match these filters. Remove a step from the pipeline above to widen the search.</div>`;
+    $("showing").textContent = list.length ? `Showing ${fmt(shown.length)} of ${fmt(list.length)}` : "";
+    $("more").hidden = shown.length >= list.length;
+    document.querySelectorAll("[data-status]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.status === state.status)));
+  }
+
+  /* Facet state uses the column key "cc" for country */
+  Object.defineProperty(state, "cc", { get() { return state.country; }, set(v) { state.country = v; } });
+
+  function set(key, value) {
+    state[key] = state[key] === value ? null : value;
+    state.limit = PAGE;
+    state.open = null;
+    render();
+  }
+
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("button");
+    if (!t) return;
+    if (t.dataset.facet) {
+      const key = t.dataset.facet === "cc" ? "country" : t.dataset.facet;
+      set(key, NUMERIC.has(key) ? Number(t.dataset.value) : t.dataset.value);
+    } else if (t.dataset.cc) {
+      set("country", t.dataset.cc);
+      document.getElementById("directory").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    } else if (t.dataset.clear) {
+      const k = t.dataset.clear;
+      if (k === "q") { state.q = ""; $("q").value = ""; }
+      else if (k === "status") state.status = "all";
+      else state[k] = null;
+      state.limit = PAGE;
+      render();
+    } else if (t.dataset.status) {
+      state.status = t.dataset.status;
+      state.limit = PAGE;
+      render();
+    } else if (t.dataset.open) {
+      state.open = state.open === t.dataset.open ? null : t.dataset.open;
+      render();
+    } else if (t.id === "more") {
+      state.limit += PAGE;
+      render();
+    } else if (t.id === "more-country") {
+      state.allCountries = !state.allCountries;
+      render();
+    } else if (t.id === "more-sector") {
+      state.allSectors = !state.allSectors;
+      render();
+    }
+  });
+
+  let qTimer;
+  $("q").addEventListener("input", (e) => {
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { state.q = e.target.value.trim(); state.limit = PAGE; state.open = null; render(); }, 120);
+  });
+  $("sort").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+  const narrow = window.matchMedia("(width < 820px)");
+  const syncFilters = () => { $("filters").open = !narrow.matches; };
+  narrow.addEventListener("change", syncFilters);
+  syncFilters();
+
+  $("snapshot").textContent = new Date(ATLAS.generated + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  renderFacts();
+  render();
+
+  /* WebMCP: register read-only tools when the browser exposes a model context */
+  const publicView = (c) => ({ id: c.id, name: c.name, description: c.about || null, website: c.url || null, linkedin: c.linkedin || null, city: c.city || null, country: c.country || null, sector: c.sector || null, employees: c.size || null, team_now: TEAM_NOW[c.teamNow], team_all_time: TEAM_ALL[c.teamAll], status: c.active ? "active" : "past", first_elixir_role: c.since || null, last_elixir_role: c.active ? "now" : c.last || null });
+  const text = (obj) => ({ content: [{ type: "text", text: JSON.stringify(obj) }] });
+  const codeFor = (name) => Object.keys(COUNTRIES).find((k) => COUNTRIES[k].toLowerCase() === String(name).toLowerCase()) || String(name).toUpperCase();
+
+  const tools = [
+    {
+      name: "search_companies",
+      description: "Search companies that use or used Elixir. Filter by text, country, sector, employee count, Elixir team size now or all time, and status. Returns at most 50 companies.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Text to match in name, description, city, domain or sector" },
+          country: { type: "string", description: "Country name or ISO 3166 alpha-2 code, for example Brazil or BR" },
+          sector: { type: "string", description: "Sector name, for example Fintech & payments" },
+          employees: { type: "string", enum: SIZES },
+          team_now: { type: "string", enum: TEAM_NOW, description: "Range of people who have an Elixir job there today" },
+          team_all_time: { type: "string", enum: TEAM_ALL, description: "Range of people who ever had an Elixir job there" },
+          status: { type: "string", enum: ["active", "past"], description: "active means Elixir is in use there now" },
+          limit: { type: "integer", minimum: 1, maximum: 50 }
+        }
+      },
+      annotations: { readOnlyHint: true },
+      execute: async (a = {}) => {
+        const f = { q: a.query || "", country: a.country ? codeFor(a.country) : null, sector: a.sector || null, size: a.employees || null, teamNow: a.team_now ? TEAM_NOW.indexOf(a.team_now) : null, teamAll: a.team_all_time ? TEAM_ALL.indexOf(a.team_all_time) : null, status: a.status || "all" };
+        const list = filtered(f);
+        return text({ total: list.length, companies: list.slice(0, Math.min(a.limit || 20, 50)).map(publicView) });
+      }
+    },
+    {
+      name: "get_company",
+      description: "Get one company by its id or name.",
+      inputSchema: { type: "object", properties: { id: { type: "string", description: "Company id such as podium, or the company name" } }, required: ["id"] },
+      annotations: { readOnlyHint: true },
+      execute: async ({ id }) => {
+        const c = byId.get(slug(id || "")) || companies.find((x) => x.name.toLowerCase() === String(id).toLowerCase());
+        return c ? text(publicView(c)) : text({ error: "not_found", message: `No company matches ${id}. Use search_companies to find the id.` });
+      }
+    },
+    {
+      name: "directory_stats",
+      description: "Count companies by country, sector or employee count, optionally only those using Elixir now.",
+      inputSchema: { type: "object", properties: { group_by: { type: "string", enum: ["country", "sector", "employees"] }, status: { type: "string", enum: ["active", "past"] } }, required: ["group_by"] },
+      annotations: { readOnlyHint: true },
+      execute: async ({ group_by, status }) => {
+        const key = { country: "country", sector: "sector", employees: "size" }[group_by] || "country";
+        const list = filtered({ status: status || "all" });
+        const counts = [...countBy(list, key).entries()].sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ [group_by]: k, companies: n }));
+        return text({ total: list.length, groups: counts });
+      }
+    }
+  ];
+
+  let mc = null;
+  try { mc = document.modelContext || navigator.modelContext; } catch (err) { mc = null; }
+  if (mc && typeof mc.registerTool === "function") {
+    for (const t of tools) { try { mc.registerTool(t); } catch (err) { /* tool already registered or API mismatch */ } }
+  }
+})();
+</script>
+</body>
+</html>

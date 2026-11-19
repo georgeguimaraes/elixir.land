@@ -1,0 +1,34 @@
+name: Correct a listing
+description: Report wrong data for a company on Elixir Land.
+title: "Correct listing: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Do not add names or links to personal profiles.
+  - type: input
+    id: company
+    attributes:
+      label: Company
+      description: The company name as Elixir Land shows it.
+    validations:
+      required: true
+  - type: dropdown
+    id: change
+    attributes:
+      label: What is wrong
+      options:
+        - Headquarters or country
+        - Sector
+        - Company size
+        - Elixir team size
+        - In use now or last use
+        - Website
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Tell us the correct value. A link to a public company page helps.

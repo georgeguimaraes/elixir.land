@@ -1,0 +1,189 @@
+@import "tailwindcss" source(none);
+@source "./atlas.src.html";
+
+@plugin "./vendor/daisyui.mjs" {
+  themes: false;
+  logs: false;
+  /* Only the parts the page uses. Without this list, words in the page such as "range" or "status" turn on unused components. */
+  include: rootcolor, svg, properties, scrollbar, button, input, select, card, radius;
+}
+
+/* One daisyUI theme that reads the site tokens below, so light, dark and the toggle stay in the token blocks. */
+@plugin "./vendor/daisyui-theme.mjs" {
+  name: "elixirland";
+  default: true;
+  --color-base-100: var(--surface);
+  --color-base-200: var(--paper);
+  --color-base-300: var(--line);
+  --color-base-content: var(--ink);
+  --color-primary: var(--accent);
+  --color-primary-content: var(--accent-ink);
+  --color-neutral: var(--ink);
+  --color-neutral-content: var(--paper);
+  --radius-selector: 2rem;
+  --radius-field: 2rem;
+  --radius-box: 10px;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+:root {
+  --paper: #f5f4f9;
+  --surface: #ffffff;
+  --ink: #1b1528;
+  --muted: #655d7a;
+  --faint: #8f88a3;
+  --line: #e2dfeb;
+  --line-strong: #cdc8da;
+  --accent: #5a2ea6;
+  --accent-ink: #ffffff;
+  --accent-soft: #ede7f9;
+  --pipe: #b4570f;
+  --string: #2f7d5b;
+  --atom: #8a3fb8;
+  --focus: #7c4ddb;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #110e18;
+    --surface: #18141f;
+    --ink: #ebe7f4;
+    --muted: #a39cb6;
+    --faint: #7d7591;
+    --line: #29233a;
+    --line-strong: #3a3350;
+    --accent: #b394f2;
+    --accent-ink: #1b1528;
+    --accent-soft: #261e3a;
+    --pipe: #f0a35e;
+    --string: #7fcfa6;
+    --atom: #d39af2;
+    --focus: #c3a8ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #110e18;
+  --surface: #18141f;
+  --ink: #ebe7f4;
+  --muted: #a39cb6;
+  --faint: #7d7591;
+  --line: #29233a;
+  --line-strong: #3a3350;
+  --accent: #b394f2;
+  --accent-ink: #1b1528;
+  --accent-soft: #261e3a;
+  --pipe: #f0a35e;
+  --string: #7fcfa6;
+  --atom: #d39af2;
+  --focus: #c3a8ff;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-primary-soft: var(--accent-soft);
+  --color-pipe: var(--pipe);
+  --color-string: var(--string);
+  --color-atom: var(--atom);
+}
+
+@theme {
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Schibsted Grotesk", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --text-micro: 0.72rem;
+  --text-tiny: 0.78rem;
+  --text-small: 0.8125rem;
+  --text-body: 0.9375rem;
+  --text-lead: 1.125rem;
+  --text-title: 1.5rem;
+  --text-heading: 1.6rem;
+  --text-section: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+  --text-hero: clamp(2.6rem, 1.8rem + 3.4vw, 4.4rem);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@utility wrap {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Outside any layer, so a host page that adds its own body reset cannot replace the page colors and font. */
+html { background: var(--paper); scroll-padding-top: 72px; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--paper);
+  }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+  summary::-webkit-details-marker { display: none; }
+  code, pre, kbd, samp { font-variant-ligatures: none; }
+}
+
+@layer components {
+  /* The directory header and every row share one grid, written once here because the rows come from JavaScript. */
+  .row-grid {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 2.2fr) minmax(0, 1.5fr) minmax(0, 1.4fr) 6.5rem 7.5rem 4.2rem 4.6rem 1.4rem;
+    gap: 16px;
+    align-items: center;
+  }
+  @media (width < 1000px) {
+    .row-grid { grid-template-columns: 3rem minmax(0, 2fr) minmax(0, 1.4fr) 7.5rem 4.6rem 1.4rem; }
+  }
+  @media (width < 620px) {
+    .row-grid {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "name team" "loc status";
+      gap: 6px 12px;
+    }
+  }
+
+  .filters-summary::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin: 0 2px 3px 0;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(45deg);
+  }
+  .filters[open] .filters-summary::after { margin-bottom: -3px; transform: rotate(-135deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
