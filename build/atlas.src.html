@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script data-goatcounter="https://georgeguimaraes.goatcounter.com/count" async src="https://gc.zgo.at/count.v4.js" crossorigin="anonymous" integrity="sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+"></script>
 <script>
   (() => { try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {} })();
 </script>
@@ -32,7 +33,7 @@
         <svg class="group-data-[dark=true]:hidden" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         <svg class="hidden group-data-[dark=true]:block" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.3M8 13.2v1.3M1.5 8h1.3M13.2 8h1.3M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
-      <a class="btn btn-neutral btn-sm h-[38px] px-3.5 text-small font-medium" href="#add">Add your company</a>
+      <a class="btn btn-neutral btn-sm h-[38px] px-3.5 text-small font-medium" href="#add" data-track="add-company/nav">Add your company</a>
     </nav>
   </div>
 </header>
@@ -178,9 +179,9 @@
             <li>Ask one more person on your team to do the same. We list a company when 2 or more people use Elixir there.</li>
             <li>Send us the LinkedIn URL of the company, for example linkedin.com/company/your-company.</li>
           </ol>
-          <a class="btn btn-neutral btn-sm h-[38px] self-start px-3.5 text-small font-semibold" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=add-company.yml">Send the company URL</a>
+          <a class="btn btn-neutral btn-sm h-[38px] self-start px-3.5 text-small font-semibold" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=add-company.yml" data-track="add-company/github">Send the company URL</a>
           <p class="text-small text-muted">The button opens a public issue on GitHub. Send the company page only, not links to personal profiles.</p>
-          <p class="text-small text-muted [&_a]:underline [&_a]:hover:text-ink"><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20">Correct a listing</a></p>
+          <p class="text-small text-muted [&_a]:underline [&_a]:hover:text-ink"><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></p>
         </article>
       </div>
     </div>
@@ -198,8 +199,8 @@
     <div>
       <h4>Your company</h4>
       <ul>
-        <li><a href="#add">Add your company</a></li>
-        <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20">Correct a listing</a></li>
+        <li><a href="#add" data-track="add-company/nav">Add your company</a></li>
+        <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></li>
       </ul>
     </div>
     <div>
@@ -225,6 +226,10 @@
   const sizeFull = (size) => size.split("-").map((n) => Number.parseInt(n, 10).toLocaleString("en")).join(" to ") + (size.endsWith("+") ? "+" : "");
   const PAGE = 40;
   const NUMERIC = new Set(["teamNow", "teamAll"]);
+
+  /* GoatCounter events. The counter skips localhost and sets no cookies. Event names hold companies and filters, never visitor data. */
+  const track = (path) => { try { window.goatcounter?.count?.({ path, event: true }); } catch (err) { /* counter not loaded or blocked */ } };
+  const FACET_LABEL = { country: (v) => COUNTRIES[v], teamNow: (v) => TEAM_NOW[v], teamAll: (v) => TEAM_ALL[v], size: (v) => SIZE_LABEL[v] };
 
   /* Class lists that the templates below repeat. Tailwind reads them from this file, so they stay as full strings. */
   const BTN_MAIN = "btn btn-sm btn-primary px-3.5";
@@ -405,9 +410,9 @@
         </dl>
         ${c.about ? `<div><div class="eyebrow mb-2">About</div><p class="max-w-[40em] text-small text-muted">${esc(c.about)}</p></div>` : ""}
         <div class="col-span-full flex flex-wrap items-center gap-2">
-          ${c.url ? `<a class="${BTN_MAIN}" href="${esc(c.url)}" target="_blank" rel="noopener">Visit ${esc(c.site)}${ICON_OUT}</a>` : ""}
-          ${c.linkedin ? `<a class="${BTN_SOFT}" href="${c.linkedin}" target="_blank" rel="noopener">LinkedIn${ICON_OUT}</a>` : ""}
-          <a class="${BTN_QUIET} ml-auto" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&title=${encodeURIComponent("Correct listing: " + c.name)}&company=${encodeURIComponent(c.name)}" target="_blank" rel="noopener">${ICON_EDIT}Correct this listing</a>
+          ${c.url ? `<a class="${BTN_MAIN}" href="${esc(c.url)}" target="_blank" rel="noopener" data-track="visit/${esc(c.name)}">Visit ${esc(c.site)}${ICON_OUT}</a>` : ""}
+          ${c.linkedin ? `<a class="${BTN_SOFT}" href="${c.linkedin}" target="_blank" rel="noopener" data-track="linkedin/${esc(c.name)}">LinkedIn${ICON_OUT}</a>` : ""}
+          <a class="${BTN_QUIET} ml-auto" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&title=${encodeURIComponent("Correct listing: " + c.name)}&company=${encodeURIComponent(c.name)}" target="_blank" rel="noopener" data-track="correct-listing/${esc(c.name)}">${ICON_EDIT}Correct this listing</a>
         </div>
       </div>` : "";
     return `<div class="border-b border-line${open ? " bg-surface" : ""}">
@@ -451,6 +456,7 @@
 
   function set(key, value) {
     state[key] = state[key] === value ? null : value;
+    if (state[key] !== null) track(`filter/${key}/${(FACET_LABEL[key] || String)(value)}`);
     state.limit = PAGE;
     state.open = null;
     render();
@@ -474,10 +480,12 @@
       render();
     } else if (t.dataset.status) {
       state.status = t.dataset.status;
+      track(`status/${state.status}`);
       state.limit = PAGE;
       render();
     } else if (t.dataset.open) {
       state.open = state.open === t.dataset.open ? null : t.dataset.open;
+      if (state.open) track(`open/${companies.find((c) => c.id === state.open).name}`);
       render();
     } else if (t.id === "more") {
       state.limit += PAGE;
@@ -491,12 +499,21 @@
     }
   });
 
-  let qTimer;
+  /* Links with data-track count a click: add company, correct listing, visit site, LinkedIn. */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-track]");
+    if (a) track(a.dataset.track);
+  });
+
+  let qTimer, searchTimer;
   $("q").addEventListener("input", (e) => {
     clearTimeout(qTimer);
+    clearTimeout(searchTimer);
     qTimer = setTimeout(() => { state.q = e.target.value.trim(); state.limit = PAGE; state.open = null; render(); }, 120);
+    /* A search counts once the visitor stops typing, so each finished term counts once. */
+    searchTimer = setTimeout(() => { const q = e.target.value.trim().toLowerCase(); if (q.length > 1) track(`search/${q.slice(0, 60)}`); }, 1500);
   });
-  $("sort").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+  $("sort").addEventListener("change", (e) => { state.sort = e.target.value; track(`sort/${state.sort}`); render(); });
   const narrow = window.matchMedia("(width < 820px)");
   const syncFilters = () => { $("filters").open = !narrow.matches; };
   narrow.addEventListener("change", syncFilters);
@@ -562,7 +579,10 @@
   let mc = null;
   try { mc = document.modelContext || navigator.modelContext; } catch (err) { mc = null; }
   if (mc && typeof mc.registerTool === "function") {
-    for (const t of tools) { try { mc.registerTool(t); } catch (err) { /* tool already registered or API mismatch */ } }
+    for (const t of tools) {
+      const counted = { ...t, execute: (args) => { track(`agent/${t.name}`); return t.execute(args); } };
+      try { mc.registerTool(counted); } catch (err) { /* tool already registered or API mismatch */ }
+    }
   }
 })();
 </script>

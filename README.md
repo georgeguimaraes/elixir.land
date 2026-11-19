@@ -45,6 +45,14 @@ The data comes from a private dataset that is not in this repo. The export scrip
 
 `data.js` contains only company-level data. Team sizes are ranges. The site never lists people.
 
+## Analytics
+
+The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. The dashboard is at https://georgeguimaraes.goatcounter.com.
+
+- GoatCounter sets no cookies and does not count visits from localhost or `file://`.
+- The page sends events for filters, searches, opened companies, link clicks with a `data-track` attribute and agent tool calls. Event names hold company names and filter values, never visitor data.
+- To move to a new GoatCounter script version, change the `src` and the `integrity` hash in `build/atlas.src.html` together.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html` and `CNAME` to GitHub Pages.
