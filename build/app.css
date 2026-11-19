@@ -5,7 +5,7 @@
   themes: false;
   logs: false;
   /* Only the parts the page uses. Without this list, words in the page such as "range" or "status" turn on unused components. */
-  include: rootcolor, svg, properties, scrollbar, button, input, select, card, radius;
+  include: rootcolor, svg, properties, scrollbar, button, input, select, card, menu, badge, footer, radius;
 }
 
 /* One daisyUI theme that reads the site tokens below, so light, dark and the toggle stay in the token blocks. */
@@ -256,15 +256,6 @@ body {
   }
 
   /* Footer columns. A link with its own color class needs hover:text-ink, because utilities win over this layer. */
-  .site-footer h4 {
-    margin-bottom: 0.625rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--ink);
-    text-transform: uppercase;
-  }
   .site-footer p { margin-bottom: 0.5rem; max-width: 40em; }
   .site-footer ul { display: grid; gap: 0.375rem; }
   @media (hover: hover) {

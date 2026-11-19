@@ -96,12 +96,12 @@
           <div class="facet-groups max-[820px]:px-4 max-[820px]:py-1">
             <div>
               <h3 class="eyebrow mb-2.5">Country</h3>
-              <ul class="grid gap-px" id="f-country"></ul>
+              <ul class="menu menu-sm w-full p-0" id="f-country"></ul>
               <button type="button" class="mt-1.5 cursor-pointer px-2 py-1 text-small font-semibold text-primary" id="more-country">Show all countries</button>
             </div>
             <div>
               <h3 class="eyebrow mb-2.5">Sector</h3>
-              <ul class="grid gap-px" id="f-sector"></ul>
+              <ul class="menu menu-sm w-full p-0" id="f-sector"></ul>
               <button type="button" class="mt-1.5 cursor-pointer px-2 py-1 text-small font-semibold text-primary" id="more-sector">Show all sectors</button>
             </div>
             <div>
@@ -224,22 +224,22 @@
 </main>
 
 <footer>
-  <div class="site-footer wrap grid grid-cols-[minmax(0,1.4fr)_repeat(2,minmax(0,1fr))] gap-8 pt-10 pb-14 text-small text-muted max-[760px]:grid-cols-1 max-[760px]:gap-6">
+  <div class="site-footer footer sm:footer-horizontal wrap gap-8 pt-10 pb-14 text-small text-muted">
     <div>
-      <h4>About</h4>
+      <h4 class="footer-title font-mono text-micro tracking-[0.08em]">About</h4>
       <p>Elixir Land is a community project. It is not affiliated with the Elixir team.</p>
       <p><a href="#method">How we build this list</a></p>
       <p class="text-faint">Made with 💜 by <a class="text-muted hover:text-ink" href="https://github.com/georgeguimaraes">@georgeguimaraes</a></p>
     </div>
     <div>
-      <h4>Your company</h4>
+      <h4 class="footer-title font-mono text-micro tracking-[0.08em]">Your company</h4>
       <ul>
         <li><a href="#add" data-track="add-company/nav">Add your company</a></li>
         <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></li>
       </ul>
     </div>
     <div>
-      <h4>Data</h4>
+      <h4 class="footer-title font-mono text-micro tracking-[0.08em]">Data</h4>
       <ul>
         <li><a href="https://github.com/georgeguimaraes/elixir.land">Source on GitHub</a></li>
       </ul>
@@ -403,7 +403,7 @@
     el.innerHTML = keys.map((k) => {
       const n = counts.get(k) || 0;
       const on = state[key] === k;
-      return `<li><button type="button" class="group flex w-full cursor-pointer justify-between gap-2 rounded-md px-2 py-[5px] text-left text-small hover:bg-primary-soft aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent" data-facet="${key}" data-value="${esc(k)}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""}>
+      return `<li><button type="button" class="group flex justify-between ${on ? "menu-active" : ""} disabled:cursor-default disabled:opacity-40" data-facet="${key}" data-value="${esc(k)}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""}>
         <span>${esc(label(k))}</span><span class="text-faint tabular-nums group-aria-pressed:text-paper group-aria-pressed:opacity-70">${n}</span></button></li>`;
     }).join("");
   }
@@ -413,7 +413,7 @@
     el.innerHTML = values.map((v) => {
       const n = counts.get(v) || 0;
       const on = state[key] === v;
-      return `<button type="button" class="cursor-pointer rounded-full border border-line-strong bg-surface px-2.5 py-[5px] text-tiny tabular-nums hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-default disabled:opacity-40" data-facet="${key}" data-value="${v}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""} title="${n} companies">${esc(label(v))}</button>`;
+      return `<button type="button" class="btn btn-xs font-normal tabular-nums aria-pressed:btn-neutral" data-facet="${key}" data-value="${v}" aria-pressed="${on}" ${!n && !on ? "disabled" : ""} title="${n} companies">${esc(label(v))}</button>`;
     }).join("");
   }
 
@@ -427,7 +427,7 @@
   function rowHTML(c) {
     const open = state.open === c.id;
     const place = c.city || c.country;
-    const badge = c.cc ? `<span class="mr-1.5 inline-block min-w-[2.2em] rounded border border-line-strong px-[5px] py-px text-center font-mono text-[0.68rem] text-ink">${c.cc}</span>` : "";
+    const badge = c.cc ? `<span class="badge badge-outline badge-xs mr-1.5 font-mono">${c.cc}</span>` : "";
     const loc = badge + (place ? esc(place) : `<span class="text-faint">Unknown</span>`);
     const status = c.active
       ? `<span class="${STATUS}"><span class="${DOT_ACTIVE}"></span>In use now</span>`
