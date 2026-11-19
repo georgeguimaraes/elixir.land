@@ -20,6 +20,11 @@ body:
     attributes:
       label: Company website
       placeholder: https://your-company.com
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Optional. For example, what the company builds with Elixir, or since when it uses Elixir. Do not write the names of people.
   - type: checkboxes
     id: company-page
     attributes:
