@@ -410,7 +410,7 @@
         </dl>
         ${c.about ? `<div><div class="eyebrow mb-2">About</div><p class="max-w-[40em] text-small text-muted">${esc(c.about)}</p></div>` : ""}
         <div class="col-span-full flex flex-wrap items-center gap-2">
-          ${c.url ? `<a class="${BTN_MAIN}" href="${esc(c.url)}" target="_blank" rel="noopener" data-track="visit/${esc(c.name)}">Visit ${esc(c.site)}${ICON_OUT}</a>` : ""}
+          ${c.url ? `<a class="${BTN_MAIN}" href="${esc(c.url)}" target="_blank" rel="noopener" data-track="website/${esc(c.name)}">Visit ${esc(c.site)}${ICON_OUT}</a>` : ""}
           ${c.linkedin ? `<a class="${BTN_SOFT}" href="${c.linkedin}" target="_blank" rel="noopener" data-track="linkedin/${esc(c.name)}">LinkedIn${ICON_OUT}</a>` : ""}
           <a class="${BTN_QUIET} ml-auto" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&title=${encodeURIComponent("Correct listing: " + c.name)}&company=${encodeURIComponent(c.name)}" target="_blank" rel="noopener" data-track="correct-listing/${esc(c.name)}">${ICON_EDIT}Correct this listing</a>
         </div>
@@ -499,10 +499,10 @@
     }
   });
 
-  /* Links with data-track count a click: add company, correct listing, visit site, LinkedIn. */
+  /* Links with data-track count a click as "click/<data-track>", so GoatCounter lists clicks apart from page visits. */
   document.addEventListener("click", (e) => {
     const a = e.target.closest("[data-track]");
-    if (a) track(a.dataset.track);
+    if (a) track(`click/${a.dataset.track}`);
   });
 
   let qTimer, searchTimer;
