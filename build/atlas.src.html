@@ -28,6 +28,7 @@
     <nav class="site-nav ml-auto flex items-center gap-5" aria-label="Main">
       <a href="#directory">Directory</a>
       <a href="#countries">Countries</a>
+      <a href="#elixir">Elixir</a>
       <a href="#method">Method</a>
       <button type="button" class="group grid size-[34px] cursor-pointer place-items-center rounded-full border border-line text-muted hover:border-line-strong hover:text-ink" id="theme-toggle" aria-label="Switch to dark theme">
         <svg class="group-data-[dark=true]:hidden" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -142,7 +143,41 @@
     </div>
   </section>
 
-  <section id="method">
+  <section class="border-t border-line" id="elixir">
+    <div class="wrap py-14">
+      <div class="mb-8 grid grid-cols-2 items-end gap-8 max-[960px]:grid-cols-1 max-[960px]:gap-3">
+        <div>
+          <div class="eyebrow">The language</div>
+          <h2 class="mt-2.5 heading-section">What is Elixir?</h2>
+        </div>
+        <p class="max-w-[36em] text-muted">Elixir is a functional programming language for software that must scale and stay easy to maintain. It runs on the Erlang virtual machine, the BEAM, which telecom systems have used for decades to stay online.</p>
+      </div>
+      <ul class="grid grid-cols-4 gap-6 max-[960px]:grid-cols-2 max-[620px]:grid-cols-1">
+        <li>
+          <h3 class="heading-sm">It keeps running</h3>
+          <p class="mt-2 text-small text-muted">Each task runs in its own lightweight process. When one process fails, a supervisor restarts it and the rest of the system keeps working.</p>
+        </li>
+        <li>
+          <h3 class="heading-sm">It scales</h3>
+          <p class="mt-2 text-small text-muted">The same code uses all the cores of one machine, and it can spread across a cluster of machines.</p>
+        </li>
+        <li>
+          <h3 class="heading-sm">It is easy to change</h3>
+          <p class="mt-2 text-small text-muted">Immutable data and a gradual type system make code clear to read and safe to change as the team grows.</p>
+        </li>
+        <li>
+          <h3 class="heading-sm">It is productive</h3>
+          <p class="mt-2 text-small text-muted">Mix, Hex, the formatter and ExUnit come with the language. With IEx and Livebook you can try code live.</p>
+        </li>
+      </ul>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        <a class="btn btn-sm btn-soft btn-primary px-3.5" href="https://elixir-lang.org" target="_blank" rel="noopener" data-track="elixir/website">elixir-lang.org<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6.5 5H11v4.5"/></svg></a>
+        <a class="btn btn-sm btn-soft btn-primary px-3.5" href="https://hexdocs.pm/elixir/introduction.html" target="_blank" rel="noopener" data-track="elixir/getting-started">Getting started guide<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6.5 5H11v4.5"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-line" id="method">
     <div class="wrap py-14">
       <div class="mb-8 grid grid-cols-2 items-end gap-8 max-[960px]:grid-cols-1 max-[960px]:gap-3">
         <div>
