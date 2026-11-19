@@ -25,7 +25,7 @@
       <svg class="size-[30px] flex-none" viewBox="0 0 32 32" aria-hidden="true"><path d="M1.5 30c4.5-6.5 9.5-9 14.5-9s10 2.5 14.5 9Z" fill="var(--accent)" opacity=".22"/><path d="M11 24.5V4" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M14.5 4.5 25.5 10l-11 5.5Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/></svg>
       Elixir Land
     </a>
-    <nav class="ml-auto flex items-center gap-5 [&>a:not(.btn)]:text-small [&>a:not(.btn)]:font-medium [&>a:not(.btn)]:text-muted [&>a:not(.btn)]:hover:text-ink max-[720px]:[&>a:not(.btn)]:hidden" aria-label="Main">
+    <nav class="site-nav ml-auto flex items-center gap-5" aria-label="Main">
       <a href="#directory">Directory</a>
       <a href="#countries">Countries</a>
       <a href="#method">Method</a>
@@ -43,12 +43,12 @@
     <div class="wrap grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] items-end gap-12 pt-14 pb-10 max-[900px]:grid-cols-1 max-[900px]:gap-8 max-[900px]:pt-9 max-[900px]:pb-7">
       <div>
         <div class="eyebrow">An atlas of Elixir in production · Snapshot of <span id="snapshot"></span></div>
-        <h1 class="mt-3.5 mb-[18px] font-display text-hero leading-[0.95] font-normal tracking-[-0.012em] text-balance">Who runs Elixir <em class="text-primary italic">in production.</em></h1>
+        <h1 class="mt-3.5 mb-[18px] heading-hero">Who runs Elixir <em class="text-primary italic">in production.</em></h1>
         <p class="max-w-[34em] text-lead text-pretty text-muted" id="lede">Companies with Elixir teams, where they are and how big their teams are. Validated using people's work descriptions.</p>
         <div class="mt-7 flex flex-wrap gap-7 border-t border-line pt-5" id="facts"></div>
       </div>
       <figure class="rounded-box border border-line bg-surface px-5 pt-5 pb-3.5" aria-labelledby="chart-title">
-        <h2 class="mb-3 font-display text-heading leading-tight font-normal" id="chart-title">Companies by country</h2>
+        <h2 class="mb-3 heading-sm" id="chart-title">Companies by country</h2>
         <ul class="grid gap-1" id="bars"></ul>
         <div class="mt-3 flex gap-4 text-[0.75rem] text-faint">
           <span><i class="mr-1.5 inline-block size-2.5 rounded-[2px] bg-primary align-[-1px]"></i>Elixir in use now</span>
@@ -63,10 +63,10 @@
       <div class="mb-[18px] flex flex-wrap items-end justify-between gap-4">
         <div>
           <div class="eyebrow">Directory</div>
-          <h2 class="mt-1.5 font-display text-[2.1rem] leading-tight font-normal" id="result-title">644 companies</h2>
+          <h2 class="mt-1.5 heading-title" id="result-title">644 companies</h2>
         </div>
         <div class="flex flex-wrap items-center gap-2.5">
-          <div class="inline-flex rounded-full border border-line-strong bg-surface p-[3px] [&>button]:cursor-pointer [&>button]:rounded-full [&>button]:px-3 [&>button]:py-[7px] [&>button]:text-small [&>button]:font-medium [&>button]:whitespace-nowrap [&>button]:text-muted [&>button[aria-pressed=true]]:bg-ink [&>button[aria-pressed=true]]:text-paper" role="group" aria-label="Elixir status">
+          <div class="segmented inline-flex rounded-full border border-line-strong bg-surface p-[3px]" role="group" aria-label="Elixir status">
             <button type="button" data-status="all" aria-pressed="true">All</button>
             <button type="button" data-status="active" aria-pressed="false">In use now</button>
             <button type="button" data-status="past" aria-pressed="false">Used before</button>
@@ -92,7 +92,7 @@
       <div class="grid grid-cols-[240px_minmax(0,1fr)] items-start gap-8 max-[1000px]:grid-cols-[200px_minmax(0,1fr)] max-[1000px]:gap-5 max-[820px]:grid-cols-1 max-[820px]:gap-4">
         <details class="filters max-[820px]:rounded-box max-[820px]:border max-[820px]:border-line max-[820px]:bg-surface" id="filters" open>
           <summary class="filters-summary hidden cursor-pointer list-none items-center gap-2.5 px-4 py-3 text-small font-semibold max-[820px]:flex"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M4.5 8h7M7 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Filters</span><span class="ml-auto font-mono font-medium text-primary" id="filter-count"></span></summary>
-          <div class="max-[820px]:px-4 max-[820px]:py-1 [&>div]:mb-5 [&>div]:border-b [&>div]:border-line [&>div]:pb-5 [&>div:last-child]:border-b-0">
+          <div class="facet-groups max-[820px]:px-4 max-[820px]:py-1">
             <div>
               <h3 class="eyebrow mb-2.5">Country</h3>
               <ul class="grid gap-px" id="f-country"></ul>
@@ -147,13 +147,13 @@
       <div class="mb-8 grid grid-cols-2 items-end gap-8 max-[960px]:grid-cols-1 max-[960px]:gap-3">
         <div>
           <div class="eyebrow">Method</div>
-          <h2 class="mt-2.5 font-display text-section leading-[1] font-normal tracking-[-0.01em] text-balance">How we build this list</h2>
+          <h2 class="mt-2.5 heading-section">How we build this list</h2>
         </div>
         <p class="max-w-[36em] text-muted">We scan public LinkedIn profiles for job experiences that mention Elixir. Then we group those experiences by company.</p>
       </div>
       <div class="grid grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] items-start gap-8 max-[960px]:grid-cols-1">
-        <div class="text-muted [&_b]:font-semibold [&_b]:text-ink [&_h3]:mb-2.5 [&_h3]:font-display [&_h3]:text-heading [&_h3]:leading-tight [&_h3]:font-normal [&_h3]:text-ink [&_h3:not(:first-child)]:mt-7 [&>p]:max-w-[40em] [&>ul]:grid [&>ul]:max-w-[40em] [&>ul]:list-disc [&>ul]:gap-2 [&>ul]:pl-[1.2em]">
-          <h3>What counts</h3>
+        <div class="method-text text-muted">
+          <h3 class="heading-sm">What counts</h3>
           <ul>
             <li><b>A person</b> counts when one of their job experiences mentions Elixir: as a skill on the job, in the job title or in the job description.</li>
             <li><b>A company</b> is listed when 2 or more people have such an experience there.</li>
@@ -162,9 +162,9 @@
             <li><b>Since</b> and <b>Last use</b> are the first and the most recent year in which one of them had the job.</li>
             <li><b>Location, sector and company size</b> come from public company information.</li>
           </ul>
-          <h3>What we do not show</h3>
+          <h3 class="heading-sm">What we do not show</h3>
           <p>We never show people, names or profile links. Team sizes show as ranges, so a listing never gives an exact number of people.</p>
-          <h3>Limits</h3>
+          <h3 class="heading-sm">Limits</h3>
           <ul>
             <li>We only find people who mention Elixir on a LinkedIn job experience. The profile headline and the "About" section do not count.</li>
             <li>Coverage is not equal in all countries. The scan has more profiles from some regions than from others.</li>
@@ -173,7 +173,7 @@
         </div>
         <article class="card min-w-0 gap-3.5 rounded-box border border-line bg-surface p-[22px]" id="add">
           <div class="flex items-center justify-between gap-2"><span class="eyebrow">Your company</span></div>
-          <h3 class="font-display text-heading leading-tight font-normal">Add your company</h3>
+          <h3 class="heading-sm">Add your company</h3>
           <ol class="grid list-decimal gap-1.5 pl-[1.2em] text-small text-muted">
             <li>On LinkedIn, mention Elixir on your current job: add it as a skill on the job, or write it in the job title or the job description.</li>
             <li>Ask one more person on your team to do the same. We list a company when 2 or more people use Elixir there.</li>
@@ -181,7 +181,7 @@
           </ol>
           <a class="btn btn-neutral btn-sm h-[38px] self-start px-3.5 text-small font-semibold" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=add-company.yml" data-track="add-company/github">Send the company URL</a>
           <p class="text-small text-muted">The button opens a public issue on GitHub. Send the company page only, not links to personal profiles.</p>
-          <p class="text-small text-muted [&_a]:underline [&_a]:hover:text-ink"><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></p>
+          <p class="text-small text-muted"><a class="underline hover:text-ink" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></p>
         </article>
       </div>
     </div>
@@ -189,12 +189,12 @@
 </main>
 
 <footer>
-  <div class="wrap grid grid-cols-[minmax(0,1.4fr)_repeat(2,minmax(0,1fr))] gap-8 pt-10 pb-14 text-small text-muted max-[760px]:grid-cols-1 max-[760px]:gap-6 [&_a]:hover:text-ink [&_a]:hover:underline [&_h4]:mb-2.5 [&_h4]:font-mono [&_h4]:text-micro [&_h4]:font-medium [&_h4]:tracking-[0.08em] [&_h4]:text-ink [&_h4]:uppercase [&_p]:mb-2 [&_p]:max-w-[40em] [&_ul]:grid [&_ul]:gap-1.5">
+  <div class="site-footer wrap grid grid-cols-[minmax(0,1.4fr)_repeat(2,minmax(0,1fr))] gap-8 pt-10 pb-14 text-small text-muted max-[760px]:grid-cols-1 max-[760px]:gap-6">
     <div>
       <h4>About</h4>
       <p>Elixir Land is a community project. It is not affiliated with the Elixir team.</p>
       <p><a href="#method">How we build this list</a></p>
-      <p class="text-faint">Made with 💜 by <a class="text-muted" href="https://github.com/georgeguimaraes">@georgeguimaraes</a></p>
+      <p class="text-faint">Made with 💜 by <a class="text-muted hover:text-ink" href="https://github.com/georgeguimaraes">@georgeguimaraes</a></p>
     </div>
     <div>
       <h4>Your company</h4>
