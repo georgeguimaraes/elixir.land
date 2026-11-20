@@ -23,7 +23,7 @@ The script does these steps:
 
 1. It downloads the pinned Tailwind CLI to `build/bin` on the first run and checks its SHA-256. Git ignores `build/bin`.
 2. It compiles `build/app.css` with Tailwind and daisyUI. The daisyUI plugin files are in `build/vendor`.
-3. It puts the CSS and `build/data.js` into `build/atlas.src.html` and writes `index.html` at the repo root.
+3. It puts the CSS and the JSON data in `build/data.json` into `build/atlas.src.html` and writes `index.html` at the repo root.
 
 The build needs Elixir and curl. It does not need Node, npm or Python.
 
@@ -40,10 +40,10 @@ The build needs Elixir and curl. It does not need Node, npm or Python.
 
 The data comes from a private dataset that is not in this repo. The export script lives with that dataset, so the raw data and the individual profiles never come into this repo.
 
-1. Run the private export script. It writes `build/data.js`.
+1. Run the private export script. It writes `build/data.json`.
 2. Run `elixir build/build.exs`.
 
-`data.js` contains only company-level data. Team sizes are ranges. The site never lists people.
+`data.json` contains only company-level data. Team sizes are ranges. The site never lists people.
 
 ## Analytics
 

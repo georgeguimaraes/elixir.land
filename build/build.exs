@@ -2,9 +2,9 @@
 #
 #     elixir build/build.exs
 #
-# Steps: compile build/app.css with the Tailwind CLI (daisyUI comes from build/vendor), then put the CSS and build/data.js into the page.
+# Steps: compile build/app.css with the Tailwind CLI (daisyUI comes from build/vendor), then put the CSS and the JSON data in build/data.json into the page.
 # On the first run the script downloads the pinned Tailwind CLI to build/bin with curl and checks its SHA-256.
-# build/data.js comes from a private export script that lives with the private dataset, outside this repo.
+# build/data.json comes from a private export script that lives with the private dataset, outside this repo.
 
 defmodule Build do
   @tailwind "v4.3.4"
@@ -16,10 +16,10 @@ defmodule Build do
   def run(here) do
     css = compile_css(here)
     page = File.read!(Path.join(here, "atlas.src.html"))
-    data = File.read!(Path.join(here, "data.js"))
+    data = File.read!(Path.join(here, "data.json"))
 
     page =
-      Enum.reduce([{"/*__CSS__*/", String.trim(css)}, {"/*__DATA__*/", data}], page, fn {marker, value}, page ->
+      Enum.reduce([{"/*__CSS__*/", String.trim(css)}, {"/*__DATA__*/", String.trim(data)}], page, fn {marker, value}, page ->
         case String.split(page, marker) do
           [before, rest] -> before <> value <> rest
           parts -> raise "#{marker} must occur once in atlas.src.html, found #{length(parts) - 1}"
