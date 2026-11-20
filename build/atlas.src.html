@@ -228,20 +228,20 @@
     <div>
       <h4 class="footer-title font-mono text-micro tracking-[0.08em]">About</h4>
       <p>Elixir Land is a community project. It is not affiliated with the Elixir team.</p>
-      <p><a href="#method">How we build this list</a></p>
-      <p class="text-faint">Made with 💜 by <a class="text-muted hover:text-ink" href="https://github.com/georgeguimaraes">@georgeguimaraes</a></p>
+      <p><a href="#method" data-track="footer/method">How we build this list</a></p>
+      <p class="text-faint">Made with 💜 by <a class="text-muted hover:text-ink" href="https://github.com/georgeguimaraes" data-track="footer/author">@georgeguimaraes</a></p>
     </div>
     <div>
       <h4 class="footer-title font-mono text-micro tracking-[0.08em]">Your company</h4>
       <ul>
-        <li><a href="#add" data-track="add-company/nav">Add your company</a></li>
-        <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></li>
+        <li><a href="#add" data-track="footer/add-company">Add your company</a></li>
+        <li><a href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="footer/correct-listing">Correct a listing</a></li>
       </ul>
     </div>
     <div>
       <h4 class="footer-title font-mono text-micro tracking-[0.08em]">Data</h4>
       <ul>
-        <li><a href="https://github.com/georgeguimaraes/elixir.land">Source on GitHub</a></li>
+        <li><a href="https://github.com/georgeguimaraes/elixir.land" data-track="footer/source">Source on GitHub</a></li>
       </ul>
     </div>
   </div>
@@ -524,12 +524,15 @@ const ATLAS = /*__DATA__*/;
       render();
     } else if (t.id === "more") {
       state.limit += PAGE;
+      track(`more/${state.limit}`);
       render();
     } else if (t.id === "more-country") {
       state.allCountries = !state.allCountries;
+      if (state.allCountries) track("expand/countries");
       render();
     } else if (t.id === "more-sector") {
       state.allSectors = !state.allSectors;
+      if (state.allSectors) track("expand/sectors");
       render();
     }
   });

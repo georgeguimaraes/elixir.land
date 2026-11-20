@@ -51,6 +51,8 @@ The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. T
 
 - GoatCounter sets no cookies and does not count visits from localhost or `file://`.
 - The page sends events for filters, searches, opened companies, clicks on links with a `data-track` attribute (as `click/<data-track>`, for example `click/website/Podium`) and agent tool calls. Event names hold company names and filter values, never visitor data.
+- The "Show 40 more" button sends `more/<limit>`, with the row limit after the click: `more/80` after the first click, `more/120` after the second click. "Show all countries" and "Show all sectors" send `expand/countries` and `expand/sectors`.
+- Footer links send `click/footer/<link>`, for example `click/footer/source`. The same links in the header and the Method section have their own names.
 - To move to a new GoatCounter script version, change the `src` and the `integrity` hash in `build/atlas.src.html` together.
 
 ## Deploy
