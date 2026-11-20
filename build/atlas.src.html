@@ -382,7 +382,7 @@
     if (state.size) steps.push(["size", `<span class="${FN}">where(employees: </span><span class="${STR}">"${state.size}"</span><span class="${FN}">)</span>`]);
     if (state.status !== "all") steps.push(["status", `<span class="${FN}">where(status: </span><span class="${ATOM}">:${state.status}</span><span class="${FN}">)</span>`]);
     const order = { now: "desc: :team_now", all: "desc: :team_all_time", since: "asc: :since", last: "desc: :last_use", size: "desc: :employees", name: "asc: :name" }[state.sort];
-    const parts = [`<span class="${FN}">Land.companies()</span>`];
+    const parts = [`<span class="${FN}">ElixirLand.companies()</span>`];
     for (const [key, html] of steps) {
       parts.push(`<span class="${OP}">|&gt;</span><span class="inline-flex items-center gap-1.5 rounded-md bg-primary-soft pr-1 pl-2">${html}<button type="button" class="grid size-[18px] cursor-pointer place-items-center rounded text-[0.85rem] leading-none text-muted hover:bg-line-strong hover:text-ink" data-clear="${key}" aria-label="Remove this filter">×</button></span>`);
     }
