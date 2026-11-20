@@ -73,12 +73,18 @@
             <button type="button" data-status="past" aria-pressed="false">Used before</button>
           </div>
           <select class="select select-sm h-[38px] w-auto rounded-full border-line-strong bg-surface text-small" id="sort" aria-label="Sort companies">
-            <option value="now">Largest team now</option>
-            <option value="all">Largest team all time</option>
-            <option value="since">Earliest adopters</option>
-            <option value="last">Most recent use</option>
-            <option value="size">Largest company</option>
-            <option value="name">Name A to Z</option>
+            <option value="now-desc">Largest team now</option>
+            <option value="now-asc">Smallest team now</option>
+            <option value="all-desc">Largest team all time</option>
+            <option value="all-asc">Smallest team all time</option>
+            <option value="since-asc">Earliest adopters</option>
+            <option value="since-desc">Latest adopters</option>
+            <option value="last-desc">Most recent use</option>
+            <option value="last-asc">Least recent use</option>
+            <option value="size-desc">Largest company</option>
+            <option value="size-asc">Smallest company</option>
+            <option value="name-asc">Name A to Z</option>
+            <option value="name-desc">Name Z to A</option>
           </select>
         </div>
       </div>
@@ -256,6 +262,15 @@ const ATLAS = /*__DATA__*/;
   const TEAM_ALL = ["Under 5", "5 to 9", "10 to 24", "25 to 49", "50 to 99", "100+"];
   const TEAM_NOW = ["0", "Under 5", "5 to 9", "10 to 24", "25 to 49", "50 to 99", "100+"];
   const SIZES = ["0-1", "2-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+"];
+  /* Each sort key gives a value to compare and the field name for the pipeline line. null means unknown, and unknown values go last in both directions. */
+  const SORTS = {
+    now: { field: "team_now", value: (c) => c.teamNow },
+    all: { field: "team_all_time", value: (c) => c.teamAll },
+    since: { field: "since", value: (c) => c.since || null },
+    last: { field: "last_use", value: (c) => c.last || null },
+    size: { field: "employees", value: (c) => (SIZES.includes(c.size) ? SIZES.indexOf(c.size) : null) },
+    name: { field: "name", value: (c) => c.name },
+  };
   const SIZE_LABEL = { "0-1": "0 to 1", "2-10": "2 to 10", "11-50": "11 to 50", "51-200": "51 to 200", "201-500": "201 to 500", "501-1000": "501 to 1K", "1001-5000": "1K to 5K", "5001-10000": "5K to 10K", "10001+": "10K+" };
   /* The full LinkedIn band for the detail panel, so "1001-5000" reads "1,001 to 5,000". */
   const sizeFull = (size) => size.split("-").map((n) => Number.parseInt(n, 10).toLocaleString("en")).join(" to ") + (size.endsWith("+") ? "+" : "");
@@ -288,7 +303,7 @@ const ATLAS = /*__DATA__*/;
   }));
   const byId = new Map(companies.map((c) => [c.id, c]));
 
-  const state = { q: "", country: null, sector: null, teamNow: null, teamAll: null, size: null, status: "all", sort: "now", limit: PAGE, open: null, allCountries: false, allSectors: false };
+  const state = { q: "", country: null, sector: null, teamNow: null, teamAll: null, size: null, status: "all", sort: "now-desc", limit: PAGE, open: null, allCountries: false, allSectors: false };
 
   const $ = (id) => document.getElementById(id);
 
@@ -328,15 +343,17 @@ const ATLAS = /*__DATA__*/;
   }
   const filtered = (f, skip) => companies.filter((c) => matches(c, f, skip));
 
+  /* sort is "<key>-<asc|desc>". Ties keep the data order, which is the largest team all time first. */
   function sortList(list, sort) {
-    const s = list.slice();
-    if (sort === "name") s.sort((a, b) => a.name.localeCompare(b.name));
-    else if (sort === "since") s.sort((a, b) => (a.since || 9999) - (b.since || 9999) || a.rank - b.rank);
-    else if (sort === "last") s.sort((a, b) => b.last - a.last || a.rank - b.rank);
-    else if (sort === "size") s.sort((a, b) => SIZES.indexOf(b.size) - SIZES.indexOf(a.size) || a.rank - b.rank);
-    else if (sort === "now") s.sort((a, b) => b.teamNow - a.teamNow || a.rank - b.rank);
-    else s.sort((a, b) => a.rank - b.rank);
-    return s;
+    const [key, dir] = sort.split("-");
+    const value = SORTS[key].value;
+    const sign = dir === "asc" ? 1 : -1;
+    const compare = (a, b) => (typeof a === "string" ? a.localeCompare(b) : a - b);
+    return list.slice().sort((a, b) => {
+      const [va, vb] = [value(a), value(b)];
+      if (va === null || vb === null) return (va === null) - (vb === null) || a.rank - b.rank;
+      return sign * compare(va, vb) || a.rank - b.rank;
+    });
   }
 
   function countBy(list, key) {
@@ -381,7 +398,8 @@ const ATLAS = /*__DATA__*/;
     if (state.teamAll !== null) steps.push(["teamAll", `<span class="${FN}">where(team_all_time: </span><span class="${STR}">"${TEAM_ALL[state.teamAll]}"</span><span class="${FN}">)</span>`]);
     if (state.size) steps.push(["size", `<span class="${FN}">where(employees: </span><span class="${STR}">"${state.size}"</span><span class="${FN}">)</span>`]);
     if (state.status !== "all") steps.push(["status", `<span class="${FN}">where(status: </span><span class="${ATOM}">:${state.status}</span><span class="${FN}">)</span>`]);
-    const order = { now: "desc: :team_now", all: "desc: :team_all_time", since: "asc: :since", last: "desc: :last_use", size: "desc: :employees", name: "asc: :name" }[state.sort];
+    const [sortKey, sortDir] = state.sort.split("-");
+    const order = `${sortDir}: :${SORTS[sortKey].field}`;
     const parts = [`<span class="${FN}">ElixirLand.companies()</span>`];
     for (const [key, html] of steps) {
       parts.push(`<span class="${OP}">|&gt;</span><span class="inline-flex items-center gap-1.5 rounded-md bg-primary-soft pr-1 pl-2">${html}<button type="button" class="grid size-[18px] cursor-pointer place-items-center rounded text-[0.85rem] leading-none text-muted hover:bg-line-strong hover:text-ink" data-clear="${key}" aria-label="Remove this filter">×</button></span>`);
