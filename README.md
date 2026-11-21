@@ -63,6 +63,12 @@ The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. T
 - Footer links send `click/footer/<link>`, for example `click/footer/source`. The same links in the header and the Method section have their own names.
 - To move to a new GoatCounter script version, change the `src` and the `integrity` hash in `build/atlas.src.html` together.
 
+## License
+
+- The code is under the MIT License. See `LICENSE`.
+- The data and the text of the page are under CC BY 4.0. See `LICENSE-DATA.md`.
+- The daisyUI files in `build/vendor` keep their own MIT License.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html` and `CNAME` to GitHub Pages.
