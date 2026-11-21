@@ -402,12 +402,14 @@ const ATLAS = /*__DATA__*/;
     if (state.status !== "all") steps.push(["status", `<span class="${FN}">where(status: </span><span class="${ATOM}">:${state.status}</span><span class="${FN}">)</span>`]);
     const [sortKey, sortDir] = state.sort.split("-");
     const order = `${sortDir}: :${SORTS[sortKey].field}`;
+    /* "|>" and its step never break apart. On a narrow screen each step starts a new line, as in Elixir code. */
+    const pipe = (step, note = "") =>
+      `<span class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 max-[620px]:basis-full"><span class="inline-flex items-center gap-1.5"><span class="${OP}">|&gt;</span>${step}</span>${note}</span>`;
     const parts = [`<span class="${FN}">ElixirLand.companies()</span>`];
     for (const [key, html] of steps) {
-      parts.push(`<span class="${OP}">|&gt;</span><span class="inline-flex items-center gap-1.5 rounded-md bg-primary-soft pr-1 pl-2">${html}<button type="button" class="grid size-[18px] cursor-pointer place-items-center rounded text-[0.85rem] leading-none text-muted hover:bg-line-strong hover:text-ink" data-clear="${key}" aria-label="Remove this filter">×</button></span>`);
+      parts.push(pipe(`<span class="inline-flex items-center gap-1.5 rounded-md bg-primary-soft pr-1 pl-2">${html}<button type="button" class="grid size-[18px] cursor-pointer place-items-center rounded text-[0.85rem] leading-none text-muted hover:bg-line-strong hover:text-ink" data-clear="${key}" aria-label="Remove this filter">×</button></span>`));
     }
-    parts.push(`<span class="${OP}">|&gt;</span><span class="${FN}">order_by(${order.replace(/(:\w+)$/, `<span class="${ATOM}">$1</span>`)})</span>`);
-    parts.push(`<span class="${NOTE}"># =&gt; ${fmt(count)} ${count === 1 ? "company" : "companies"}</span>`);
+    parts.push(pipe(`<span class="${FN}">order_by(${order.replace(/(:\w+)$/, `<span class="${ATOM}">$1</span>`)})</span>`, `<span class="${NOTE}"># =&gt; ${fmt(count)} ${count === 1 ? "company" : "companies"}</span>`));
     $("pipeline").innerHTML = parts.join(" ");
     const n = steps.filter(([k]) => k !== "q").length;
     $("filter-count").textContent = n ? `${n} active` : "";
