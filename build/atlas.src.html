@@ -369,7 +369,7 @@ const ATLAS = /*__DATA__*/;
     const active = companies.filter((c) => c.active).length;
     const countries = new Set(companies.map((c) => c.cc).filter(Boolean)).size;
     $("facts").innerHTML = [
-      [fmt(companies.length), "companies with Elixir teams"],
+      [fmt(companies.length), "companies"],
       [fmt(active), "using Elixir today"],
       [fmt(countries), "countries"]
     ].map(([n, l]) => `<div><b class="block font-display text-[2.4rem] leading-[1.05] font-normal tabular-nums">${n}</b><span class="text-small text-muted">${l}</span></div>`).join("");
