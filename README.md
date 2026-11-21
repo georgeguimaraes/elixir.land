@@ -58,3 +58,5 @@ The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. T
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html` and `CNAME` to GitHub Pages.
+
+The workflow has two jobs: `build` uploads the site as an artifact, and `deploy` publishes it. If only the `deploy` job fails, run the failed job again. Do not run all jobs again: the build job then uploads a second artifact with the same name, and the deploy fails.
