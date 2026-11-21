@@ -211,7 +211,8 @@
             <li>The real numbers are larger. Many people who use Elixir do not write it on LinkedIn, and some people have no LinkedIn profile. So a real team is often larger than its range, and some companies with Elixir teams are not on the list.</li>
             <li>Coverage is not equal in all countries. The scan has more profiles from some regions than from others.</li>
             <li>A team can still use Elixir after its "Last use" year if nobody updated their profile.</li>
-            <li>The list also has companies that closed, merged or were acquired. Each company shows with the name that people wrote on their profiles, so an acquired company can show next to the company that bought it.</li>
+            <li>The list also has companies that closed or were acquired. Each company shows with the name that people wrote on their profiles, so an acquired company can show next to the company that bought it.</li>
+            <li>When companies merged into a new company, we count their people in the new company. Its details show the names of the companies that merged.</li>
           </ul>
         </div>
         <article class="card min-w-0 gap-3.5 rounded-box border border-line bg-surface p-[22px]" id="add">
@@ -302,7 +303,7 @@ const ATLAS = /*__DATA__*/;
     id: slug(r[0]) || "company-" + i,
     name: r[0], city: r[1], cc: r[2], country: COUNTRIES[r[2]] || "",
     site: r[3], url: r[4], sector: r[5], size: r[6],
-    teamAll: r[7], since: r[8], last: r[9], active: r[9] === NOW, teamNow: r[10], about: r[11], linkedin: r[12] ? `https://www.linkedin.com/company/${r[12]}/` : "", rank: i
+    teamAll: r[7], since: r[8], last: r[9], active: r[9] === NOW, teamNow: r[10], about: r[11], linkedin: r[12] ? `https://www.linkedin.com/company/${r[12]}/` : "", merged: r[13], rank: i
   }));
   const byId = new Map(companies.map((c) => [c.id, c]));
 
@@ -327,12 +328,13 @@ const ATLAS = /*__DATA__*/;
   syncTheme();
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const fmt = (n) => n.toLocaleString("en-US");
+  const AND_LIST = new Intl.ListFormat("en", { type: "conjunction" });
   const sinceLabel = (y) => (y ? String(y) : "Unknown");
   const lastLabel = (y) => (y === NOW ? "Now" : sinceLabel(y));
 
   function matches(c, f, skip) {
     if (f.q) {
-      const hay = (c.name + " " + c.city + " " + c.country + " " + c.site + " " + c.sector + " " + c.about).toLowerCase();
+      const hay = (c.name + " " + c.city + " " + c.country + " " + c.site + " " + c.sector + " " + c.about + " " + c.merged.join(" ")).toLowerCase();
       if (!hay.includes(f.q.toLowerCase())) return false;
     }
     if (skip !== "country" && f.country && c.cc !== f.country) return false;
@@ -461,6 +463,7 @@ const ATLAS = /*__DATA__*/;
           <dt>Headquarters</dt><dd>${esc([c.city, c.country].filter(Boolean).join(", ") || "Unknown")}</dd>
           <dt>Sector</dt><dd>${esc(c.sector || "Unknown")}</dd>
           <dt>Employees</dt><dd>${c.size ? sizeFull(c.size) + " employees" : "Unknown"}</dd>
+          ${c.merged.length ? `<dt>Merged from</dt><dd>${esc(AND_LIST.format(c.merged))}</dd>` : ""}
           <dt>Elixir team now</dt><dd>${TEAM_NOW[c.teamNow]} people</dd>
           <dt>Elixir team, all time</dt><dd>${TEAM_ALL[c.teamAll]} people</dd>
           <dt>First Elixir role</dt><dd>${sinceLabel(c.since)}</dd>
@@ -623,7 +626,7 @@ const ATLAS = /*__DATA__*/;
   render();
 
   /* WebMCP: register read-only tools when the browser exposes a model context */
-  const publicView = (c) => ({ id: c.id, name: c.name, description: c.about || null, website: c.url || null, linkedin: c.linkedin || null, city: c.city || null, country: c.country || null, sector: c.sector || null, employees: c.size || null, team_now: TEAM_NOW[c.teamNow], team_all_time: TEAM_ALL[c.teamAll], status: c.active ? "active" : "past", first_elixir_role: c.since || null, last_elixir_role: c.active ? "now" : c.last || null });
+  const publicView = (c) => ({ id: c.id, name: c.name, description: c.about || null, website: c.url || null, linkedin: c.linkedin || null, city: c.city || null, country: c.country || null, sector: c.sector || null, employees: c.size || null, team_now: TEAM_NOW[c.teamNow], team_all_time: TEAM_ALL[c.teamAll], status: c.active ? "active" : "past", first_elixir_role: c.since || null, last_elixir_role: c.active ? "now" : c.last || null, merged_from: c.merged });
   const text = (obj) => ({ content: [{ type: "text", text: JSON.stringify(obj) }] });
   const codeFor = (name) => Object.keys(COUNTRIES).find((k) => COUNTRIES[k].toLowerCase() === String(name).toLowerCase()) || String(name).toUpperCase();
 
@@ -634,7 +637,7 @@ const ATLAS = /*__DATA__*/;
       inputSchema: {
         type: "object",
         properties: {
-          query: { type: "string", description: "Text to match in name, description, city, domain or sector" },
+          query: { type: "string", description: "Text to match in name, description, city, domain, sector or the names of merged companies" },
           country: { type: "string", description: "Country name or ISO 3166 alpha-2 code, for example Brazil or BR" },
           sector: { type: "string", description: "Sector name, for example Fintech & payments" },
           employees: { type: "string", enum: SIZES },
