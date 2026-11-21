@@ -484,6 +484,42 @@ const ATLAS = /*__DATA__*/;
     </div>`;
   }
 
+  /* The search, filters, status and sort go in the URL, so a view can be shared. The parameter names are the same as in the pipeline line. A default value stays out of the URL, and the page ignores a value that it does not know. */
+  const known = (values) => (s) => (values.includes(s) ? s : null);
+  const URL_STATE = {
+    q: { param: "q", write: (v) => v, read: (s) => s.trim() },
+    country: { param: "country", write: (v) => v.toLowerCase(), read: (s) => (COUNTRIES[s.toUpperCase()] ? s.toUpperCase() : null) },
+    sector: { param: "sector", write: (v) => v, read: (s) => (companies.some((c) => c.sector === s) ? s : null) },
+    teamNow: { param: "team_now", write: (v) => TEAM_NOW[v], read: (s) => (TEAM_NOW.includes(s) ? TEAM_NOW.indexOf(s) : null) },
+    teamAll: { param: "team_all_time", write: (v) => TEAM_ALL[v], read: (s) => (TEAM_ALL.includes(s) ? TEAM_ALL.indexOf(s) : null) },
+    size: { param: "employees", write: (v) => v, read: known(SIZES) },
+    status: { param: "status", write: (v) => (v === "all" ? "" : v), read: known(["active", "past"]) },
+    sort: { param: "sort", write: (v) => (v === "now-desc" ? "" : v), read: known([...$("sort").options].map((o) => o.value)) },
+  };
+
+  function readUrl() {
+    const params = new URLSearchParams(location.search);
+    for (const [key, { param, read }] of Object.entries(URL_STATE)) {
+      const value = params.has(param) ? read(params.get(param)) : null;
+      if (value !== null) state[key] = value;
+    }
+    $("q").value = state.q;
+    $("sort").value = state.sort;
+  }
+
+  /* Other parameters, such as utm_source, stay in the URL. */
+  function writeUrl() {
+    const params = new URLSearchParams(location.search);
+    for (const [key, { param, write }] of Object.entries(URL_STATE)) {
+      const value = state[key] === null ? "" : write(state[key]);
+      if (value !== "") params.set(param, value);
+      else params.delete(param);
+    }
+    const search = params.toString();
+    const url = location.pathname + (search ? `?${search}` : "") + location.hash;
+    if (url !== location.pathname + location.search + location.hash) history.replaceState(null, "", url);
+  }
+
   function render() {
     const list = sortList(filtered(state), state.sort);
     $("result-title").textContent = `${fmt(list.length)} ${list.length === 1 ? "company" : "companies"}`;
@@ -502,6 +538,7 @@ const ATLAS = /*__DATA__*/;
     $("showing").textContent = list.length ? `Showing ${fmt(shown.length)} of ${fmt(list.length)}` : "";
     $("more").hidden = shown.length >= list.length;
     document.querySelectorAll("[data-status]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.status === state.status)));
+    writeUrl();
   }
 
   /* Facet state uses the column key "cc" for country */
@@ -577,6 +614,7 @@ const ATLAS = /*__DATA__*/;
 
   $("snapshot").textContent = new Date(ATLAS.generated + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   renderFacts();
+  readUrl();
   render();
 
   /* WebMCP: register read-only tools when the browser exposes a model context */

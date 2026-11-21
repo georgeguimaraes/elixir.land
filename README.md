@@ -45,6 +45,14 @@ The data comes from a private dataset that is not in this repo. The export scrip
 
 `data.json` contains only company-level data. Team sizes are ranges. The site never lists people.
 
+## Shared views
+
+The URL holds the search, the filters, the status and the sort, so a visitor can share a view. For example: `https://elixir.land/?country=br&sort=since-asc`.
+
+- The parameters are `q`, `country`, `sector`, `team_now`, `team_all_time`, `employees`, `status` and `sort`. They use the same names as the pipeline line on the page.
+- A default value is not in the URL. The page ignores a value that it does not know.
+- The page keeps other parameters, such as `utm_source`.
+
 ## Analytics
 
 The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. The dashboard is at https://georgeguimaraes.goatcounter.com.
