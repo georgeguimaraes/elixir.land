@@ -1,6 +1,48 @@
-# elixir.land
+# Elixir Land
 
-Elixir Land: a directory of companies with Elixir teams, by country, sector and team size. The site is one static `index.html` on GitHub Pages.
+**Who runs Elixir in production.** A directory of companies with Elixir teams, by country, sector and team size. Open it at [elixir.land](https://elixir.land).
+
+<a href="https://elixir.land">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/hero-dark.png">
+    <img src=".github/readme/hero-light.png" alt="The Elixir Land home page. The title says Who runs Elixir in production. A bar chart shows the number of companies by country.">
+  </picture>
+</a>
+
+## Why
+
+"Who uses Elixir in production?" Many people ask this question. A developer asks it before they learn the language. A team asks it before they choose Elixir for a new product. A person who wants an Elixir job asks it to find teams.
+
+A good answer needs evidence. Elixir Land uses the job experiences that people write on LinkedIn. When people mention Elixir on a job at a company, that company has an Elixir team. For each company, the site shows:
+
+- Where the company is and what it does.
+- How many people use Elixir there now, and how many used it in the past.
+- The first year and the last year in which someone had an Elixir job there.
+
+The list also keeps the companies that used Elixir in the past. So you can see the first companies that used Elixir next to the companies that use it today.
+
+The site never shows people, and team sizes are ranges. Many people do not write Elixir on LinkedIn, so the real numbers are larger. The [Method](https://elixir.land/#method) section on the site gives all the rules.
+
+## What you can do
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/readme/directory-dark.png">
+  <img src=".github/readme/directory-light.png" alt="The directory, sorted by the largest Elixir team now. The first company is open. It shows the headquarters, the sector, the number of employees, the Elixir team sizes and the years of the first and the last Elixir role.">
+</picture>
+
+- Search the companies by name, city, sector or website.
+- Filter by country, sector, Elixir team size now, Elixir team size all time and company size.
+- Sort by team size, by the first or the last year of Elixir use, by company size or by name.
+- Share a view. The URL keeps the search, the filters and the sort, for example [elixir.land/?country=br&sort=since-asc](https://elixir.land/?country=br&sort=since-asc).
+- Use the directory from an AI agent. The page gives read-only WebMCP tools: `search_companies`, `get_company` and `directory_stats`.
+
+## Add your company
+
+1. On LinkedIn, mention Elixir on your current job: add it as a skill on the job, or write it in the job title or the job description.
+2. Ask one more person on your team to do the same. With 2 or more people, we always list the company.
+3. [Send us the LinkedIn URL of the company](https://github.com/georgeguimaraes/elixir.land/issues/new?template=add-company.yml), for example linkedin.com/company/your-company.
+
+The issue is public. Send the company page only. Do not send links to personal profiles.
 
 ## Local preview
 
