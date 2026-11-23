@@ -34,7 +34,7 @@ The site never shows people, and team sizes are ranges. Many people do not write
 - Filter by country, sector, Elixir team size now, Elixir team size all time and company size.
 - Sort by team size, by the first or the last year of Elixir use, by company size or by name.
 - Share a view. The URL keeps the search, the filters and the sort, for example [elixir.land/?country=br&sort=since-asc](https://elixir.land/?country=br&sort=since-asc).
-- Use the directory from an AI agent. The page gives read-only WebMCP tools: `search_companies`, `get_company` and `directory_stats`.
+- Use the directory from an AI agent. In a browser with [WebMCP](https://github.com/webmachinelearning/webmcp), the page gives read-only tools: `search_companies`, `get_company` and `directory_stats`.
 
 ## Add your company
 

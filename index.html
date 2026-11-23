@@ -218,6 +218,7 @@
             <li>When companies merged into a new company, we count their people in the new company. Its details show the names of the companies that merged.</li>
           </ul>
         </div>
+        <div class="grid min-w-0 gap-6">
         <article class="card min-w-0 gap-3.5 rounded-box border border-line bg-surface p-[22px]" id="add">
           <div class="flex items-center justify-between gap-2"><span class="eyebrow">Your company</span></div>
           <h3 class="heading-sm">Add your company</h3>
@@ -230,6 +231,18 @@
           <p class="text-small text-muted">The button opens a public issue on GitHub. Send the company page only, not links to personal profiles.</p>
           <p class="text-small text-muted"><a class="underline hover:text-ink" href="https://github.com/georgeguimaraes/elixir.land/issues/new?template=correct-listing.yml&amp;title=Correct%20listing%3A%20" data-track="correct-listing">Correct a listing</a></p>
         </article>
+        <article class="card min-w-0 gap-3.5 rounded-box border border-line bg-surface p-[22px]" id="agents">
+          <div class="flex items-center justify-between gap-2"><span class="eyebrow">AI agents</span><span class="inline-flex items-center gap-1.5 text-tiny text-muted" id="webmcp-status" hidden><span class="size-[9px] flex-none rounded-full bg-primary shadow-[0_0_0_3px_var(--accent-soft)]"></span>On in this browser</span></div>
+          <h3 class="heading-sm">Use the list from an agent</h3>
+          <p class="text-small text-muted">In a browser with <a class="underline hover:text-ink" href="https://github.com/webmachinelearning/webmcp" target="_blank" rel="noopener" data-track="agents/webmcp">WebMCP</a>, this page gives 3 read-only tools to AI agents:</p>
+          <ul class="grid gap-1.5 text-small text-muted">
+            <li><code class="font-mono text-ink">search_companies</code> finds companies by text, country, sector, team size, company size and status.</li>
+            <li><code class="font-mono text-ink">get_company</code> gets one company by its name.</li>
+            <li><code class="font-mono text-ink">directory_stats</code> counts companies by country, sector or company size.</li>
+          </ul>
+          <p class="text-small text-muted">The tools give the same data as the page. They never give people.</p>
+        </article>
+        </div>
       </div>
     </div>
   </section>
@@ -254,6 +267,7 @@
     <div>
       <h4 class="footer-title font-mono text-micro tracking-[0.08em]">Data</h4>
       <ul>
+        <li><a href="#agents" data-track="footer/agents">For AI agents</a></li>
         <li><a href="https://github.com/georgeguimaraes/elixir.land" data-track="footer/source">Source on GitHub</a></li>
       </ul>
     </div>
@@ -1516,6 +1530,7 @@ const ATLAS = {"generated":"2026-11-23","countries":{"AE":"United Arab Emirates"
       const counted = { ...t, execute: (args) => { track(`agent/${t.name}`); return t.execute(args); } };
       try { mc.registerTool(counted); } catch (err) { /* tool already registered or API mismatch */ }
     }
+    $("webmcp-status").hidden = false;
   }
 })();
 </script>
