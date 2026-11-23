@@ -1,6 +1,6 @@
 # elixir.land
 
-Elixir Land: a directory of companies with Elixir teams of 2 or more people, by country, sector and team size. The site is one static `index.html` on GitHub Pages.
+Elixir Land: a directory of companies with Elixir teams, by country, sector and team size. The site is one static `index.html` on GitHub Pages.
 
 ## Local preview
 
