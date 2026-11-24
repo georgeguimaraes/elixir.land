@@ -113,6 +113,8 @@ The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. T
 
 ## Deploy
 
-Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html` and `CNAME` to GitHub Pages.
+Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html`, `og.png` and `CNAME` to GitHub Pages.
+
+`og.png` is the social card that link previews show (2400×1260). `.github/social-preview.png` is the same card at 2560×1280 for the GitHub repository settings. Both say "900+ companies" and "50+ countries", so they stay true while the list grows.
 
 The workflow has two jobs: `build` uploads the site as an artifact, and `deploy` publishes it. If only the `deploy` job fails, run the failed job again. Do not run all jobs again: the build job then uploads a second artifact with the same name, and the deploy fails.
