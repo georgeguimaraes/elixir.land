@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<style>
+.p{stroke:#1b1528}.a{fill:#5a2ea6;stroke:#5a2ea6}
+@media (prefers-color-scheme:dark){.p{stroke:#ebe7f4}.a{fill:#b394f2;stroke:#b394f2}}
+</style>
+<path class="a" d="M1.5 30c4.5-6.5 9.5-9 14.5-9s10 2.5 14.5 9Z" opacity=".22" stroke="none"/>
+<path class="p" d="M11 24.5V4" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path class="a" d="M14.5 4.5 25.5 10l-11 5.5Z" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

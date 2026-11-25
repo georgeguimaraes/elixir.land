@@ -29,12 +29,10 @@ jobs:
       - name: Build index.html
         run: elixir build/build.exs
 
-      - name: Stage site (index.html, og.png and CNAME only)
+      - name: Stage site (index.html, icons, og.png and CNAME only)
         run: |
           mkdir -p _site
-          cp index.html _site/
-          cp og.png _site/
-          cp CNAME _site/
+          cp index.html og.png favicon.ico favicon.svg apple-touch-icon.png CNAME _site/
 
       - uses: actions/configure-pages@v6
 

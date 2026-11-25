@@ -53,7 +53,7 @@ elixir build/serve.exs
 
 Then open http://127.0.0.1:8000/. Run the build again after each change to `build/`. The server uses the web server that comes with Erlang. To use a different port, give it as an argument: `elixir build/serve.exs 4000`.
 
-The page has no external files except the fonts, so `open index.html` also works without a server.
+The page has no external files except the fonts, so `open index.html` also works without a server. The icons and the social card load only from a server.
 
 ## Build
 
@@ -113,7 +113,7 @@ The page loads GoatCounter (`count.v4.js`) from `gc.zgo.at`, with an SRI hash. T
 
 ## Deploy
 
-Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html`, `og.png` and `CNAME` to GitHub Pages.
+Every push to `main` runs `.github/workflows/deploy.yml`. The workflow runs `build/build.exs`, then publishes only `index.html`, `og.png`, the three icon files and `CNAME` to GitHub Pages.
 
 `og.png` is the social card that link previews show (2400×1260). `.github/social-preview.png` is the same card at 2560×1280 for the GitHub repository settings. Both say "900+ companies" and "50+ countries", so they stay true while the list grows.
 
