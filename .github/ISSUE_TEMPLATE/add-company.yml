@@ -10,7 +10,7 @@ body:
         **What counts on LinkedIn.** Elixir must be on the job at your company, in one of these places:
         - A skill linked to the job. Edit the job on your profile, go to **Skills** and add **Elixir**. Or, in the **Skills** section of your profile, edit Elixir and select the job.
         - The job title, for example "Elixir Engineer".
-        - The job description.
+        - The job description. The words LiveView and Phoenix (the web framework) in the title or the description count like Elixir.
 
         Elixir in the headline, in the "About" section or as a skill that is not linked to a job does not count. We scan again after you send this issue, so ask your team to do this first.
 
