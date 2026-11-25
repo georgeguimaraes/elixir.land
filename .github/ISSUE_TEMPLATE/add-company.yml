@@ -5,7 +5,14 @@ body:
   - type: markdown
     attributes:
       value: |
-        We list a company when 2 or more people mention Elixir on a LinkedIn job experience at that company. Elixir can be a skill on the job, or it can be in the job title or the job description. We also list a company with 1 person who uses Elixir there today, when the company is not a one-person business.
+        We list a company when 2 or more people mention Elixir on a LinkedIn job experience at that company. We also list a company with 1 person who uses Elixir there today, when the company is not a freelance or consulting business of one person. A company with 0 or 1 employees must also sell a product.
+
+        **What counts on LinkedIn.** Elixir must be on the job at your company, in one of these places:
+        - A skill linked to the job. Edit the job on your profile, go to **Skills** and add **Elixir**. Or, in the **Skills** section of your profile, edit Elixir and select the job.
+        - The job title, for example "Elixir Engineer".
+        - The job description.
+
+        Elixir in the headline, in the "About" section or as a skill that is not linked to a job does not count. We scan again after you send this issue, so ask your team to do this first.
 
         This issue is public. Send the company page only. Do not send links to personal profiles.
   - type: input
@@ -32,3 +39,4 @@ body:
       options:
         - label: This URL is a company page, not a personal profile.
           required: true
+        - label: At least 1 person on our team has Elixir on their current job at this company on LinkedIn (a skill linked to the job, the job title or the job description).
